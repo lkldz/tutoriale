@@ -18,6 +18,8 @@
 
 [Sprawdzenie bieżącego stanu repozytorium](#git-status)
 
+[Git workflow](#git-workflow)
+
 ***********************************************************************
 
 ## Git vs GitHub <a name="git-vs-github"></a>
@@ -95,7 +97,7 @@
   * czy są "nie-trackowane" (nie śledzone) pliki
 
 
-## Git workflow 
+## Git workflow <a name="git-workflow"></a>
 
 ```flow
 
@@ -104,15 +106,21 @@
                         git add --    
                                   |
                                   STAGING AREA --
-		   	    		                                     |
-		   	    		                                 
-                                             git commit --
-		   	    		   		|
-		   	    		   	(local) REPO --
- 								|
- 								git push --
- 									   |
- 									   GITHUB/GITLAB ETC.
-``
+                                                 |             
+                                                 git commit --
+		   	    		   		                              |
+		   	    		   	                                  (local) REPO --
+ 								                                             |
+ 								                                             git push --
+ 									                                                    |
+ 									                                                    GITHUB/GITLAB ETC.
+```
+
+Opis git worfklow:
+1. <b>git add</b> - przenosi plik do staging area.
+2. <b>staging area</b> - to swego rodzaju poczekalnia, w której znajdują się pliki gotowe do commita.
+   * jeśli jednak uznam, że nie chcę robić commita pliku to mogę wyciągnąć plik ze staging area.
+3. <b>git commit</b> - zapisuje zmiany z staging area na stałe w historii lokalnego repozytorium.
+   * tworzy trwały punkt kontrolny (migawkę/snapshot) w lokalnej historii projektu. 
 
 
