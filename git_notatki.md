@@ -94,3 +94,25 @@
   * które pliki nie są staged
   * czy są "nie-trackowane" (nie śledzone) pliki
 
+
+## Git workflow 
+
+```flow
+
+      KATALOG_ROBOCZY --             
+                        |
+                        git add --    
+                                  |
+                                  STAGING AREA --
+		   	    		                                     |
+		   	    		                                 
+                                             git commit --
+		   	    		   		|
+		   	    		   	(local) REPO --
+ 								|
+ 								git push --
+ 									   |
+ 									   GITHUB/GITLAB ETC.
+``
+
+
