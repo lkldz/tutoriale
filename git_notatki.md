@@ -44,6 +44,9 @@
 
 [Not fast-forward merge](#not-fforward-merge)
 
+[Rozwiązywanie konfliktów](#conflicts)
+
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -697,3 +700,87 @@ fc9efc1 Add text to sad file.
 <hr style="border:2px solid gray">
 
 ## Not fast-forward merge <a name="not-fforward-merge"></a>
+- To operacja scalania w Git, w wyniku której zawsze powstaje nowy commit scalający (tzw. <em>merge commit</em>).
+- <em>Merge commit</em> ma dwóch rodziców (dwie gałęzie) i oficjalnie wiąże historię obu gałęzi.
+- Not fast-forward merge występuje w dwóch typach (formach):
+  	+ <em>Automatycznie:</em> gdy na <em>gałęzi docelowej</em> (np. <em>master</em>) powstały nowe commit-y od momentu utworzenia
+  	  gałęzi scalanej (feature branch).
+  	+ <em>Wymuszenie (--no-ff):</em> gdy zlecam Git-owi utworzenie commita scalającego, mimo że możliwy byłby zwykły fast-forward.
+
+<ins>Wizualizacja:</ins>
+
+1. <ins>Automatyczny not fast-forward merge:</ins><br>
+Na <em>master</em> dodano commit E, a na <em>feature</em> commit-y C i D.<br>
+Fast-forward jest niemożliwy, więc Git musi połączyć zmiany w nowym commicie M.
+```shell
+	git merge feature_branch
+```
+```text
+master:    A --- B --- E ----------- M (Merge commit)
+               	 \                 /
+feature:          C --- D ────────┘
+```	
+
+<ins>Wizualizacja:</ins>
+
+2. <ins>Wymuszony not fast-forward merge:</ins><br>
+Nawet jeśli na <em>master</em> nie ma nowych zmian (możliwy byłby fast-forward),<br>
+flaga <em>--no-ff</em> tworzy odgałęzienie i <em>commit scalający M</em>:
+```shell
+	git merge --no-ff feature_branch
+```
+```text
+master:    A --- B ----------------- M (Merge commit)
+               	 \                 /
+feature:          C --- D ────────┘
+```
+Zalety wymuszonego not-fast-forward merge:
++ Czytelna dokumentacja nowej funkcjonalności tworzonej na feature branch:<br> 
+	Graf historii (<em>git log --graph</em>) wyraźnie grupuje commity C i D jako jedną osobną funkcję/zadanie.<br>
+	
++ Proste cofanie zmian (Revert):<br> 
+	
+	```shell
+	git revert -m 1 <hash_M>
+	```
+	+ Jeśli nowa funkcja okaże się wadliwa, wystarczy cofnąć jeden commit scalający (git revert -m 1 <hash_M>), aby usunąć całą funkcję z main.<br> 
+	W przypadku fast-forward trzeba by odkręcać każdy commit osobno.<br>
++ Współpraca w zespole:<br> 
+	Pozwala zachować ślad, kiedy dana gałąź została dołączona do głównego kodu.
+
+<ins>Przypadek:</ins> Na feature branch dodałem nowe pliki a po ich utworzeniu na master pojawił się nowy commit.
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git log
+commit e4231cb2bc453f3bfa9afe06e275e95234c58262 (HEAD -> master)
+Merge: 4c2d1e6 00af6c4
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:15:40 2026 +0200
+
+    Merge branch 'sunny_branch'
+
+commit 4c2d1e6120bf4c783356c0c69180cef47bf677aa
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:15:12 2026 +0200
+
+    Add test2 file.
+
+commit 00af6c464329e14a2c3b4e3cb8dbe390300f8501 (sunny_branch)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:14:36 2026 +0200
+
+    Add sad file.
+
+commit f1feafe7328c57d10632b959c476c764206c952b
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:14:11 2026 +0200
+
+    Add funny file.
+```
+
+
+
+
+<hr style="border:2px solid gray">
+
+## Rozwiązywanie konfliktów <a name="conflicts"></a>
