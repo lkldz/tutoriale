@@ -34,6 +34,9 @@
 
 [git config](#git-config)
 
+[.gitignore](#gitignore)
+
+
 ***********************************************************************
 
 ## Git vs GitHub <a name="git-vs-github"></a>
@@ -237,6 +240,7 @@ Opis git worfklow:
    		git log --oneline
    ```
 <em>Przykład:</em>
+
 ```shell
 lkldz@fedora:~/training_material/git_file$ git log --oneline
 66247e0 (HEAD -> master, summer_branch) Modify bla and sunny files.
@@ -253,11 +257,14 @@ feaaee5 (olive_branch) Add pending file and bla_file.txt
 4ca14eb Added training files.
 lukasz@fedora:~/TEST_AUTOMATION/gitone
 ```
+
 4. Wyświetl w terminalu wizualizację historii commitów:
+   
    ```shell
    git log --graph --decorate --all
    ```
 <em>Przykład:</em>
+
 ```shell
 * commit b569b889088afd5f24cea6b79a47b03639e53429
 | Author: lkldz <lkldz@bleble.com>
@@ -274,3 +281,72 @@ lukasz@fedora:~/TEST_AUTOMATION/gitone
 ```
 
 ## git config <a name="git-config"></a>
+
+1. Ustawienia globalne:
+   
+   ```shell
+   	 git config --global ...
+   ```
+   - Zapisuje ustawienie dla danego użytkownika komputera.
+   - Działa we wszystkich repozytoriach na danym komputerze.
+   - Ustawiania globalne mogą zostać nadpisane przez lokalne.
+
+2. Ustawienia lokalne:
+   
+   ```shell
+   		git config --local ...
+   ```
+	- Zapisuje ustawienie tylko dla bieżącego repozytorium.
+	- Działa tylko w ramach danego katalogu/foldera (repo).
+ 	- Nadpisuje ustawienia globalne dla danego repo.
+
+3. Konfigurowanie nazwy oraz maila użytkownia git-a:
+   
+   ```shell
+   git config --global user.name "Mona Lisa"
+   git config --global user.email "mona.lisa@luvr.com"
+   
+   git config --local user.email "mona.lisa@paintings.com"
+   ```
+   
+4. Konfigurowanie domyślnego edytora tekstowego:
+   
+   ```shell
+   	git config --global core.editor "vi"
+   ```
+
+5. Wyświetlenie konfiguracji git-a:
+   
+   ```shell
+   git config --list
+   ```
+<em>Przykład:</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$$ git config --list
+user.name=lkldz
+user.email=lkldz@bleble.com
+core.editor=vi
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+```
+
+6. Plik <em>.gitconfig</em>
+- Przechowuje informacje o konfiguracji git-a na danym komputerze.
+- Znajduje się w katalogu "<em>home</em>".
+- Katalog domowy na Linux: <em>/home/nazwa_uzytkownika</em>
+- Katalog domowy na Windows: <em>C:\Users\NazwaUzytkownika</em>
+
+<em>Przykład:</em>
+```shell
+lkldz@fedora:~# cat ~/.gitconfig
+[user]
+	name = lkldz
+	email = lkldz@bleble.com
+[core]
+	editor = vi
+```
+
+## .gitignore <a name="gitignore"></a>
