@@ -920,3 +920,56 @@ Date:   Mon Aug 17 15:54:45 2026 +0200
 <hr style="border:2px solid gray">
 
 ## Cherry pick <a name="cherry-pick"></a>
+
+- Cherry-pick to polecenie, które pozwala wybrać jeden konkretny commit z dowolnej gałęzi i zaaplikować zawarte w nim zmiany na aktualną gałąź.
+
+- Kiedy używać cherry-pick?
+
+  + Szybka poprawka błędu (tzw. hotfix):<br>
+    naprawiono krytyczny błąd na długiej gałęzi rozwijanej funkcji (feature branch),<br>
+    ale poprawka musi trafić na produkcję (master) natychmiast, bez niegotowej reszty kodu.
+  
+  + Commit na złej gałęzi:<br>
+    zrobiono commit na gałęzi master zamiast feature-branch.<br>
+    Należy zrobić cherry-pick na właściwej gałęzi, a z master usunąć niechciany commit.
+  
+  + Wyciąganie przydatnych zmian:<br>
+    inny programista napisał na swojej gałęzi gotowy moduł, który jest nam potrzebny do dokończenia zadania.
+
+<ins>Polecenie:</ins>
+```shell
+git cherry-pick <hash_commita>
+```
+<ins>Wizualizacja:</ins><br>
+Stan początkowy:
+```text
+
+master:    A --- B (HEAD)
+                
+feature: C --- D --- E (chcę przenieść tylko commit D)
+```
+Po wykonaniu <em>git cherry-pick <hash_commita_D></em>
+```text
+master:    A --- B --- D' (HEAD)
+                
+feature: C --- D --- E
+```
+
+<ins>Cherry-pick krok po kroku:</ins>
+1. Znajdź hash commita: Przejdź na gałąź źródłową i skopiuj hash potrzebnego commita:<br>
+    <em>git log --oneline</em><br>
+    Przykład wyniku: a1b2c3d feat: dodano walidację emaila<br>
+
+2. Przełącz się na gałąź docelową:<br>
+   <em>git switch main</em><br>
+
+3. Uruchom cherry-pick:<br>
+    <em>git cherry-pick a1b2c3d</em><br>
+
+4. Jeśli przenoszony commit zmienia te same linie co kod na gałęzi docelowej, nastąpi konflikt.
+5. Rozwiąż konflikty w plikach i dodaj je do staging area:<br>
+   <em>git add .</em><br>
+7. Kontynuuj operację:<br>
+   <em>git cherry-pick --continue</em></br>
+9. (Opcjonalnie) Jeśli chcesz całkowicie wycofać się z operacji:<br>
+    <em>git cherry-pick --abort</em><br>
