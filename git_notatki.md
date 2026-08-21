@@ -36,6 +36,8 @@
 
 [.gitignore](#gitignore)
 
+[Branch](#branch)
+
 
 ***********************************************************************
 
@@ -350,3 +352,52 @@ lkldz@fedora:~# cat ~/.gitconfig
 ```
 
 ## .gitignore <a name="gitignore"></a>
+
+1. Wprowadzenie:
+- Tworzenie pliku .gitignore
+```shell
+touch .gitignore
+```
+
+- Jest to plik tekstowy w repozytorium Git-a.
+- Informuje Git, które pliki lub katalogi mają być pomijane podczas śledzenia zmian.
+- Pliki dopasowane do reguł w .gitignore nie pojawią się w git status i nie zostaną dodane do historii projektu.
+- Plik .gitignore ignoruje wyłącznie pliki nieśledzone (untracked).
+- Jeśli plik został już wcześniej dodany do Git-a i zatwierdzony (committed), dopisanie go do .gitignore nie sprawi, że przestanie być śledzony.
+- Aby Git przestał śledzić plik bez usuwania go z dysku, należy wydać polecenie:
+```shell
+	git rm --cached nazwa_pliku
+```
+- .gitignore zapobiega przypadkowemu wysłaniu na serwer haseł, tokenów API czy plików konfiguracyjnych.
+
+2. .gitignore - wzorce używane w pliku:
+- Ignoruj wszystkie pliki z rozszerzeniem .log w całym projekcie:
+```text
+*.log
+```
+- Ignoruj katalog build wraz ze wszystkimi plikami i podfolderami:
+```text
+build/
+```
+- Ignoruj konkretny plik o nazwie config.json:
+```text
+config.json
+```
+- Ignoruj pliki .txt bezpośrednio w folderze docs (ale nie w podfolderach):
+```text
+docs/*.txt
+```
+- Dodaj wyjątek: śledź plik important.log, nawet jeśli *.log jest ignorowane:
+```text
+!important.log
+```
+- Linie zaczynające się od # traktuj jako komentarze:
+```text
+# komentarz
+```
+3. Generatory pliku .gitignore:
+- Program, który tworzy szablon pliku .gitignore który może zostać użyty w ramach projektu w danej technologii.
+- Dostępne w Internecie.
+
+## Branch <a name="branch"></a>
+
