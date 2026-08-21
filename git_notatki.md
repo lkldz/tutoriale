@@ -46,6 +46,8 @@
 
 [Rozwiązywanie konfliktów](#conflicts)
 
+[Cherry pick](#cherry-pick)
+
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -779,8 +781,142 @@ Date:   Mon Aug 17 15:14:11 2026 +0200
 ```
 
 
+<hr style="border:2px solid gray">
+
+## Rozwiązywanie konfliktów <a name="conflicts"></a>
+
+- Jak wygląda konflikt?
+
+```text
+<<<<<<<<<<< HEAD
+	line 1
+	line 2       <- to jest branch na którym jestem i wykonuję merge (najczęściej master/main)
+	line 3
+===============
+	line 4       <- to linie powodujące konflikt. Linie te występuję na innej branchy 
+	line 5
+```
+
+- Jak rozwiązać konflikt?
+1. Usuń linie których nie chcesz zachować.
+2. Popraw błędy.
+3. Usuń <<<<<<< oraz ======
+4. Zapisz.
+
+- Przykład konfliktu:
+```shell
+lkldz@fedora:~/training_material/git_file$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   sunny_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+lkldz@fedora:~/training_material/git_file$ cat sunny_file.txt 
+Ala ma kota.
+Kot ma Alę.
+
+lkldz@fedora:~/training_material/git_file$ git add .
+
+lkldz@fedora:~/training_material/git_file$ git commit -m "Edited: sunny file. Added info about kot."
+[master 1af60c1] Edited: sunny file. Added info about kot.
+ 1 file changed, 1 insertion(+)
+
+lkldz@fedora:~/training_material/git_file$ git switch sunny_branch 
+Switched to branch 'sunny_branch'
+
+lkldz@fedora:~/training_material/git_file$ vi sunny_file.txt 
+
+lkldz@fedora:~/training_material/git_file$ git status
+On branch sunny_branch
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   sunny_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+lkldz@fedora:~/training_material/git_file$ cat sunny_file.txt 
+Ala ma kota.
+Ala ma też psa.
+
+lkldz@fedora:~/training_material/git_file$ git add .
+
+lkldz@fedora:~/training_material/git_file$ git commit -m "Edited sunny file. Added info about pies."
+[sunny_branch 3fefe9c] Edited sunny file. Added info about pies.
+ 1 file changed, 1 insertion(+)
+
+lkldz@fedora:~/training_material/git_file$ git switch master 
+Switched to branch 'master'
+
+lkldz@fedora:~/training_material/git_file$ git branch
+
+* master
+  new_test_branch
+  olive_branch
+  sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ git merge sunny_branch 
+Auto-merging sunny_file.txt
+CONFLICT (content): Merge conflict in sunny_file.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+lkldz@fedora:~/training_material/git_file$ cat sunny_file.txt 
+Ala ma kota.
+<<<<<<< HEAD  <-- Tzw. current change (najczęściej master/main)
+Kot ma Alę.
+=======
+Ala ma też psa.  <--- tzw. incoming change (feature branch)
+>>>>>>> sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ vi sunny_file.txt
+
+lkldz@fedora:~/training_material/git_file$ cat sunny_file.txt 
+Ala ma kota.
+Kot ma Alę.
+Ala ma też psa.
+
+lkldz@fedora:~/training_material/git_file$ git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   sunny_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+lkldz@fedora:~/training_material/git_file$ git add sunny_file.txt 
+
+lkldz@fedora:~/training_material/git_file$ git commit
+[master 048895b] Merge branch 'sunny_branch'
+
+lkldz@fedora:~/training_material/git_file$ git log
+commit 048895bf6acf5dc6b30b4aec46528163472e99d7 (HEAD -> master)
+Merge: 1af60c1 3fefe9c
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 16:39:58 2026 +0200
+
+    Merge branch 'sunny_branch'
+
+commit 3fefe9cf50d3af1f854e4919de6880201f32dee7 (sunny_branch)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:56:44 2026 +0200
+
+    Edited sunny file. Added info about pies.
+
+commit 1af60c1b020ab0b01840ae25c4f256d66cd37b41
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 15:54:45 2026 +0200
+
+    Edited: sunny file. Added info about kot.
+```
 
 
 <hr style="border:2px solid gray">
 
-## Rozwiązywanie konfliktów <a name="conflicts"></a>
+## Cherry pick <a name="cherry-pick"></a>
