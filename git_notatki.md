@@ -26,6 +26,14 @@
 
 [git add](#git-add)
 
+[git commit](#git-commit)
+
+[Atomic commits](#atomic-commits)
+
+[git log](#git-log)
+
+[git config](#git-config)
+
 ***********************************************************************
 
 ## Git vs GitHub <a name="git-vs-github"></a>
@@ -41,7 +49,11 @@
 - VCS przechowuje różne wersje tego samego pliku.
 - Tworzy swego rodzaju "check pointy".
 - Można przełączać się pomiędzy różnymi wersjami tego samego pliku.
+- Standardowy cykl pliku:
 
+  	  1. Write (w katalogu roboczym).
+  	  2. Add (staging area).
+  	  3. Commit (zapisz w historii repo).
 
 ## Repo <a name="repo"></a>
 
@@ -154,8 +166,8 @@ Opis git worfklow:
 	git status
 ```
 - Co zwróci polecenie <em>git status</em>?
-  * informacja, że znaduję się w staging area
-  * changes to be commited
+  * Informacja, że znaduję się w staging area.
+  * <em>Changes to be commited.</em>
  
 - Dodanie całej zawartości katalogu roboczego do Staging Area:
 
@@ -163,3 +175,102 @@ Opis git worfklow:
 	git add .
 ```
 
+## git commit <a name="git-commit"></a>
+
+- Commit:
+  	* Jest to swego rodzaju "check point" (snapshot/migawka) za pomocą którego zapisuę plik/pliki w danym stanie/danej wersji.
+  	* Każdy commit ma unikalny id.
+
+- Standardowe użycie polecenia git commit
+
+  ```shell
+  	git commit -m "lorem ipsum"
+  ```
+
+	* Plik zostaje zapisany w historii repozytorium (niektórzy mówią, że zostaje przeniesiony do przestrzenii repozytorium).
+ 	* Wykonując polecenie <em>git status</em> nie zobaczę już tego pliku ponieważ nie jest już w staging area.
+ 	* Dobrą praktyką są jednoznaczne wiadomości podawane po parametrze <em>-m</em>
+
+
+- Otwarcie domyślnego edytora tekstowego:
+
+ ```shell
+	git commit BEZ MESSAGE
+```
+
+## Atomic commits <a name="atomic-commits"></a>
+
+- Jeden commit = jeden task/feature/component/fix ("<em>one thing at a time</em>").
+- Tytuł commita powinien być krótki i jednoznaczny.
+- Zaleca się aby tytuł commita składał się z 50–75 znaków.
+- Tytuł commita powinien być pisany w tryb rozkazującym: „Add…”, „Fix…”, „Update…”, „Refactor…”, „Remove…”.
+- Często nie stawia się kropki na końcu tytułu commita.
+- <em>Body commita</em> pisze się, gdy commit wymaga kontekstu.
+- Zalecenia dotyczące zawartości (<em>body</em>) commita:
+  	+ pusta linia odstępu pomiędzy tytułem a body,
+  	+ napisz dlaczego dokonujesz danego commita,
+  	+ napisz co dany commit wnosi,
+  	+ ewentualnie napisz co należy przetestować
+
+## git log <a name="git-log"></a>
+
+1. Standardowe użycie polecenia:
+   ```shell
+   		git log
+   ```
+
+	+ Wyświetlone zostają następujące informacje:
+
+		* Historia/lista commitów, które zostały wykonane do repo.
+		* Commit hash (ID).
+	  	* Autor commit-a.
+		* Data commit-a.
+		* Commit message.
+
+2. Wyświetl 5 ostatnich commitów:
+   ```shell
+   		git log -n 5
+   ```
+
+3. Wyświetl tylko ID oraz tytuły commitów:
+   ```shell
+   		git log --oneline
+   ```
+<em>Przykład:</em>
+```shell
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+66247e0 (HEAD -> master, summer_branch) Modify bla and sunny files.
+048895b Merge branch 'sunny_branch'
+3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+1af60c1 Edited: sunny file. Added info about kot.
+e4231cb Merge branch 'sunny_branch'
+4c2d1e6 Added test2 file.
+00af6c4 Added sad file.
+f1feafe Added funny file.
+649c8cc Added placeholder in sunny file.
+9436a5f Added sunny file.
+feaaee5 (olive_branch) Add pending file and bla_file.txt
+4ca14eb Added training files.
+lukasz@fedora:~/TEST_AUTOMATION/gitone
+```
+4. Wyświetl w terminalu wizualizację historii commitów:
+   ```shell
+   git log --graph --decorate --all
+   ```
+<em>Przykład:</em>
+```shell
+* commit b569b889088afd5f24cea6b79a47b03639e53429
+| Author: lkldz <lkldz@bleble.com>
+| Date:   Mon Jan 26 06:05:54 2026 +0100
+| 
+|     Update git training materials
+| 
+* commit 2f52cd3f4243928e862d68f3c987f9abc1cd3946
+| Author: lkldz <lkldz@bleble.com>
+| Date:   Mon Jan 26 05:49:44 2026 +0100
+| 
+|     Add git training materials
+|
+```
+
+## git config <a name="git-config"></a>
