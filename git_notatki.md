@@ -50,6 +50,7 @@
 
 [Cherry pick](#cherry-pick)
 
+[git stash](#git-stash)
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -343,6 +344,29 @@ lukasz@fedora:~/TEST_AUTOMATION/gitone
 |     Add git training materials
 |
 ```
+
+<em>Przykład 2:</em>
+```shell
+lkldz@fedora:~/training_material/git_file$ git log --oneline --graph --all
+* 66247e0 (HEAD -> master) Modify bla and sunny files.
+*   048895b Merge branch 'sunny_branch'
+|\  
+| * 3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+* | 1af60c1 Edited: sunny file. Added info about kot.
+* | e4231cb Merge branch 'sunny_branch'
+|\| 
+| * 00af6c4 Added sad file.
+| * f1feafe Added funny file.
+* | 4c2d1e6 Added test2 file.
+|/  
+* 649c8cc Added placeholder in sunny file.
+* 9436a5f Added sunny file.
+* feaaee5 (olive_branch) Add pending file and bla_file.txt
+| * 8fa1de1 (new_test_branch) Added new text file
+|/  
+* 4ca14eb Added training files.
+lkldz@fedora:~/training_material/git_file$
+
 
 
 <hr style="border:2px solid gray">
@@ -1043,3 +1067,103 @@ index 84f4ee3..bd04e4a 100644
 2. <em>@@ -1,3 +1,4 @@</em>:
    * -1,3 — w starej wersji ten fragment zaczynał się od 1. linii i liczył 3 linie;
    * +1,4 — w nowej wersji ten fragment zaczyna się od 1. linii i po zmianach liczy 4 linie
+
+
+- Porównianie dwóch commit-ów:<br>
+	+ Polecenie:
+```shell
+ git diff hash_commit1...hash_commit2
+```
+<ins>Przykład 3:</ins><br>
+```shell
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+66247e0 (HEAD -> master) Modify bla and sunny files.
+048895b Merge branch 'sunny_branch'
+3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+1af60c1 Edited: sunny file. Added info about kot.
+e4231cb Merge branch 'sunny_branch'
+4c2d1e6 Added test2 file.
+00af6c4 Added sad file.
+f1feafe Added funny file.
+649c8cc Added placeholder in sunny file.
+9436a5f Added sunny file.
+feaaee5 (olive_branch) Add pending file and bla_file.txt
+4ca14eb Added training files.
+
+lkldz@fedora:~/training_material/git_file$ git diff 1af60c1...66247e0
+diff --git a/bla_file.txt b/bla_file.txt
+index e69de29..353adb7 100644
+--- a/bla_file.txt
++++ b/bla_file.txt
+@@ -0,0 +1 @@
++New text was added.
+diff --git a/sunny_file.txt b/sunny_file.txt
+index 5d49bff..bd04e4a 100644
+--- a/sunny_file.txt
++++ b/sunny_file.txt
+@@ -1,2 +1,4 @@
+ Ala ma kota.
+-Kot ma Alę.
++Kot ma Alę!
++A poza tym:
++Ala ma też psa...
+lkldz@fedora:~/training_material/git_file$
+```
+
+- Porównianie dwóch branch-y:<br>
+	+ Polecenie:
+```shell
+ git diff branch1_nazwa...branch2_nazwa
+```
+<ins>Przykład 3:</ins><br>
+```shell
+lkldz@fedora:~/training_material/git_file$ git branch
+* master
+  new_test_branch
+  olive_branch
+  sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ git diff new_test_branch...master 
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..e69de29
+diff --git a/bla_file.txt b/bla_file.txt
+new file mode 100644
+index 0000000..353adb7
+--- /dev/null
++++ b/bla_file.txt
+@@ -0,0 +1 @@
++New text was added.
+diff --git a/funny_file.txt b/funny_file.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000..e69de29
+diff --git a/sad_file.txt b/sad_file.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/sunny_file.txt b/sunny_file.txt
+new file mode 100644
+index 0000000..bd04e4a
+--- /dev/null
++++ b/sunny_file.txt
+@@ -0,0 +1,4 @@
++Ala ma kota.
++Kot ma Alę!
++A poza tym:
++Ala ma też psa...
+diff --git a/test2_file.txt b/test2_file.txt
+new file mode 100644
+index 0000000..e69de29
+lkldz@fedora:~/training_material/git_file$
+```
+1. <em>new file mode 100644</em><br>
+plik wcześniej w ogóle nie istniał w punkcie rozgałęzienia.<br>
+2. <em>--- /dev/null</em><br>
+   w starej wersji źródło było puste (plik nie istniał).
+
+
+<hr style="border:2px solid gray">
+
+## git stash <a name="git-stash"></a>
