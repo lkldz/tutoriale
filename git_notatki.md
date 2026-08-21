@@ -26,6 +26,8 @@
 
 [git add](#git-add)
 
+[Wycofanie pliku ze staging](#remove-from-staging)
+
 [git commit](#git-commit)
 
 [Atomic commits](#atomic-commits)
@@ -212,6 +214,17 @@ Opis git worfklow:
 ```shell
 	git add .
 ```
+
+
+<hr style="border:2px solid gray">
+
+## Wycofanie pliku ze staging area. <a name="remove-from-staging"></a>
+
+Polecenie
+```shell
+git restore --staged nazwa_pliku
+```
+
 
 <hr style="border:2px solid gray">
 
@@ -973,3 +986,60 @@ feature: C --- D --- E
    <em>git cherry-pick --continue</em></br>
 9. (Opcjonalnie) Jeśli chcesz całkowicie wycofać się z operacji:<br>
     <em>git cherry-pick --abort</em><br>
+
+
+<hr style="border:2px solid gray">
+
+## git diff <a name="git-diff"></a>
+
+- Pokazuje różnice pomiędzy dwiema wersjami tego samego pliku.
+
+- Jak czytać output git diff-a?
+``` text
+a -> file 1 & b -> file 1 (inna wersja tego samego pliku)
+--- file 1   <- "myślniki" będą wskazywać na treść file 1
++++ file 2 <- "plusy" będą wskazywać na treść file 2
+```
+
+<ins>Przykład:</ins><br>
+```shell
+lkldz@fedora:~/training_material/git_file$  git diff --staged
+diff --git a/bla_file.txt b/bla_file.txt
+index e69de29..353adb7 100644
+--- a/bla_file.txt
++++ b/bla_file.txt
+@@ -0,0 +1 @@
++New text was added.
+```
+1. <em>git diff --staged</em><br>
+   polecenie sprawdzające różnice między stanem przygotowanym do commita (staging area / index) a ostatnim zatwierdzonym commitem.<br>
+2. <em>diff --git a/bla_file.txt b/bla_file.txt</em><br>
+   git porównuje stary stan pliku (a/) z nowym stanem (b/).<br>
+3. <em>index e69de29..353adb7 100644</em><br>
+	wewnętrzne hasze obiektów Gita.<br>
+4. <em>--- a/bla_file.txt oraz +++ b/bla_file.txt</em><br>
+   oznaczenie symboli: - dla starej wersji, + dla nowej.<br>
+6. <em>@@ -0,0 +1 @@:</em><br>
+   -0,0: w starej wersji plik był pusty (0 linii od linii 0).<br>
+    +1: w nowej wersji pojawia się 1 linia tekstu od linii 1.<br>
+   +New text was added. — faktyczna zmiana: do pliku dopisano linijkę New text was added..
+
+<ins>Przykład 2:</ins><br>
+```shell
+diff --git a/sunny_file.txt b/sunny_file.txt
+index 84f4ee3..bd04e4a 100644
+--- a/sunny_file.txt
++++ b/sunny_file.txt
+@@ -1,3 +1,4 @@
+ Ala ma kota.
+-Kot ma Alę.
+-Ala ma też psa.
++Kot ma Alę!
++A poza tym:
++Ala ma też psa...
+```
+1. <em>Ala ma kota. (linijka bez znaku + ani -):</em><br>
+   linia bez zmian – stanowi kontekst dla Gita.
+2. <em>@@ -1,3 +1,4 @@</em>:
+   * -1,3 — w starej wersji ten fragment zaczynał się od 1. linii i liczył 3 linie;
+   * +1,4 — w nowej wersji ten fragment zaczyna się od 1. linii i po zmianach liczy 4 linie
