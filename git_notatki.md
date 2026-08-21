@@ -38,8 +38,11 @@
 
 [Branch](#branch)
 
+[HEAD](#head)
+
 
 ***********************************************************************
+<hr style="border:2px solid gray">
 
 ## Git vs GitHub <a name="git-vs-github"></a>
 
@@ -48,6 +51,8 @@
 - Git działa na localhost.
 - GitHub działa na remote server.
 
+
+<hr style="border:2px solid gray">
 
 ## Version Control System <a name="vcs"></a>
 
@@ -60,11 +65,15 @@
   	  2. Add (staging area).
   	  3. Commit (zapisz w historii repo).
 
+<hr style="border:2px solid gray">
+
 ## Repo <a name="repo"></a>
 
 - Folder zawierający pliki.
 - Folder ten jest śledzony ("trackowany") przez Git.
 
+
+<hr style="border:2px solid gray">
 
 ## Wersja Git-a <a name="git-version"></a>
 
@@ -76,6 +85,8 @@
 - Członkowie zespołu mogą korzystać z różnych wersji Git-a i nie wpłynie to na funkcjonalność tego programu.
 
 
+<hr style="border:2px solid gray">
+
 ## Pluginy do VSCode <a name="vscode-pluginy"></a>
 
 Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitów, branche itd.)
@@ -83,6 +94,8 @@ Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitó
 - Git Graph
 - GitLens
 
+
+<hr style="border:2px solid gray">
 
 ## Inicjalizacja nowego repozytorium <a name="git-init"></a>
 
@@ -94,6 +107,8 @@ Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitó
 - Utworzony zostaje ukryty (*hidden*) folder .git
 
 
+<hr style="border:2px solid gray">
+
 ## Katalog .git <a name="git-dir-hidden"></a>
 
 - Przechowuje informacje związane z utworzonym repozytorium m.in:
@@ -102,6 +117,8 @@ Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitó
   * informacje o stage are
 - Zasadniczo użytkownik nie dokonuje zmian w tym katalogu
 
+
+<hr style="border:2px solid gray">
 
 ## Pobieranie (pulling) istniejącego repo z remote serwera <a name="pulling-existing-repo"></a>
 
@@ -112,6 +129,8 @@ Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitó
 - Git sam utworzy katalog .git
 - Nie trzeba wpisywać git init
 
+
+<hr style="border:2px solid gray">
 
 ## Sprawdzenie bieżącego stanu repozytorium <a name="git-status"></a>
 
@@ -127,6 +146,8 @@ Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitó
   * które pliki nie są staged
   * czy są "nie-trackowane" (nie śledzone) pliki
 
+
+<hr style="border:2px solid gray">
 
 ## Git workflow <a name="git-workflow"></a>
 
@@ -155,12 +176,16 @@ Opis git worfklow:
    * tworzy trwały punkt kontrolny (migawkę/snapshot) w lokalnej historii projektu. 
 
 
+<hr style="border:2px solid gray">
+
 ## Untracked files <a name="untracked-files"></a>
 
 - Wpisując polecenie <em>git status</em> wewnątrz repo można znaleźć "untracked files".
 - Git nie śledzi zmian w takich plikach.
 - Polecenie <em>git add</em> zmienia status takich plików na "tracked".
 
+
+<hr style="border:2px solid gray">
 
 ## git add <a name="git-add"></a>
 
@@ -180,11 +205,22 @@ Opis git worfklow:
 	git add .
 ```
 
+<hr style="border:2px solid gray">
+
 ## git commit <a name="git-commit"></a>
 
 - Commit:
   	* Jest to swego rodzaju "check point" (snapshot/migawka) za pomocą którego zapisuę plik/pliki w danym stanie/danej wersji.
   	* Każdy commit ma unikalny id.
+  	* Zasadniczo każdy commit jest powiązany z poprzednim (mechanizm śledzenia "tracking") - za wyjątkiem pierwszego commit-a.
+  	* Powiązanie commit-ów umożliwia sprawdzenie co się zmieniło w czasie pomiędzy poszczególnymi commit-ami.
+
+- Jak powiązane są commit-y?
+	* 1 commit (hash, parent = null, info) <- 2 commit (hash, parent= 1 commit, info) <- 3 commit (hash, parent= 3 commit, info).
+	* Hash kolejnego commit-a jest generowany na podstawie m.in.: hash-a poprzedniego commita (lub brak w przypadku pierwszego commita),
+	wiadomość commit-a, danych o autorze (imię/nazwa, e-mail).
+	* Hash jest to ciąg 40 znaków w systemie szesnastkowym (<em>heksadecymalny, HEX - do zapisu liczb używa się 16 symboli: cyfr 0–9 oraz pierwszych liter alfabetu A–F, które zastępują wartości od 10 do 15</em>).
+	* Zmiana choćby jednej litery w commit message zmienia w wartość hash-a.
 
 - Standardowe użycie polecenia git commit
 
@@ -203,6 +239,8 @@ Opis git worfklow:
 	git commit BEZ MESSAGE
 ```
 
+<hr style="border:2px solid gray">
+
 ## Atomic commits <a name="atomic-commits"></a>
 
 - Jeden commit = jeden task/feature/component/fix ("<em>one thing at a time</em>").
@@ -216,6 +254,9 @@ Opis git worfklow:
   	+ napisz dlaczego dokonujesz danego commita,
   	+ napisz co dany commit wnosi,
   	+ ewentualnie napisz co należy przetestować
+
+
+<hr style="border:2px solid gray">
 
 ## git log <a name="git-log"></a>
 
@@ -282,6 +323,9 @@ lukasz@fedora:~/TEST_AUTOMATION/gitone
 |
 ```
 
+
+<hr style="border:2px solid gray">
+
 ## git config <a name="git-config"></a>
 
 1. Ustawienia globalne:
@@ -325,7 +369,7 @@ lukasz@fedora:~/TEST_AUTOMATION/gitone
 <em>Przykład:</em>
 
 ```shell
-lkldz@fedora:~/training_material/git_file$$ git config --list
+lkldz@fedora:~/training_material/git_file$ git config --list
 user.name=lkldz
 user.email=lkldz@bleble.com
 core.editor=vi
@@ -350,6 +394,9 @@ lkldz@fedora:~# cat ~/.gitconfig
 [core]
 	editor = vi
 ```
+
+
+<hr style="border:2px solid gray">
 
 ## .gitignore <a name="gitignore"></a>
 
@@ -399,5 +446,97 @@ docs/*.txt
 - Program, który tworzy szablon pliku .gitignore który może zostać użyty w ramach projektu w danej technologii.
 - Dostępne w Internecie.
 
+
+<hr style="border:2px solid gray">
+
 ## Branch <a name="branch"></a>
 
+1. Wprowadzenie
+	- Branch to swego rodzaju "alternatywna oś czasu".
+	- Przykładowy schemat:
+```shell  
+  m
+  |
+  o
+  |
+  o
+ /|\
+| o o
+o | |
+| o o
+o |
+| o
+o |
+| o
+ 
+m = master
+```
+2. Wyświetlenie, na której branchy jestem aktualnie:
+
+```shell
+	git branch
+```
+
+<em>Przykład:</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git branch
+* master
+```
+
+3. Tworzenie nowej branch-y:
+
+```shell
+	git branch nazwa_nowe_branchy
+```
+
+<em>Przykład:</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git branch new_test_branch
+lkldz@fedora:~/training_material/git_file$ git branch
+* master
+  new_test_branch
+```
+
+4. Przełączenie na nowy branch:
+
+```shell
+	git checkout nazwa_branchy
+```
+
+<em>Przykład:</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git checkout new_test_branch
+Switched to branch 'new_test_branch'
+lkldz@fedora:~/training_material/git_file$ git branch
+  master
+* new_test_branch
+
+lkldz@fedora:~/training_material/git_file$ git status
+On branch new_test_branch
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.gitignore
+	index.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+```
+
+5. Alternatywne polecenie do przełączania pomiędzy branch-ami:
+```shell
+	git switch nazwa_branchy
+```
+
+<em>Przykład:</em>
+```shell
+lkldz@fedora:~/training_material/git_file$ git switch master
+Switched to branch 'master'
+lkldz@fedora:~/training_material/git_file$ git branch
+* master
+  new_test_branch
+```
+
+## HEAD <a name="head"></a>
