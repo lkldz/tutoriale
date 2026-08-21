@@ -20,6 +20,12 @@
 
 [Git workflow](#git-workflow)
 
+[Pluginy do VSCode](#vscode-pluginy)
+
+[Untracked files](#untracked-files)
+
+[git add](#git-add)
+
 ***********************************************************************
 
 ## Git vs GitHub <a name="git-vs-github"></a>
@@ -51,6 +57,14 @@
 
 - Git jest bardzo stabilnym programem.
 - Członkowie zespołu mogą korzystać z różnych wersji Git-a i nie wpłynie to na funkcjonalność tego programu.
+
+
+## Pluginy do VSCode <a name="vscode-pluginy"></a>
+
+Poniższe pluginy wizualizują zmiany w lokalnym repo (liniowa historia commitów, branche itd.)
+
+- Git Graph
+- GitLens
 
 
 ## Inicjalizacja nowego repozytorium <a name="git-init"></a>
@@ -123,4 +137,29 @@ Opis git worfklow:
 3. <b>git commit</b> - zapisuje zmiany z staging area na stałe w historii lokalnego repozytorium.
    * tworzy trwały punkt kontrolny (migawkę/snapshot) w lokalnej historii projektu. 
 
+
+## Untracked files <a name="untracked-files"></a>
+
+- Wpisując polecenie <em>git status</em> wewnątrz repo można znaleźć "untracked files".
+- Git nie śledzi zmian w takich plikach.
+- Polecenie <em>git add</em> zmienia status takich plików na "tracked".
+
+
+## git add <a name="git-add"></a>
+
+- Przeniesienie przykładowego pliku <em>fileone.txt</em> do Staging Area:
+
+```shell
+	git add fileone.txt
+	git status
+```
+- Co zwróci polecenie <em>git status</em>?
+  * informacja, że znaduję się w staging area
+  * changes to be commited
+ 
+- Dodanie całej zawartości katalogu roboczego do Staging Area:
+
+```shell
+	git add .
+```
 
