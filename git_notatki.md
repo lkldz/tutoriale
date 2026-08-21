@@ -40,6 +40,9 @@
 
 [HEAD](#head)
 
+[Fast-forward merge](#fforward-merge)
+
+[Not fast-forward merge](#not-fforward-merge)
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -539,4 +542,158 @@ lkldz@fedora:~/training_material/git_file$ git branch
   new_test_branch
 ```
 
+6. Utwórz branch i od razu przełącz się na niego/nią:
+```shell
+	git checkout -b nazwa_branchy
+```
+
+<ins>Alternatywne polecenie:</ins>
+```shell
+	git switch -c nazwa_branchy
+```
+
+<em>Przykład:</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git checkout -b olive_branch
+Switched to a new branch 'olive_branch'
+lkldz@fedora:~/TEST_AUTOMATION/gitone$ git branch
+  master
+  new_test_branch
+* olive_branch
+
+lkldz@fedora:~/training_material/git_file$ git switch -c sunny_branch
+Switched to a new branch 'sunny_branch'
+lkldz@fedora:~/training_material/git_file$ git branch
+  master
+  new_test_branch
+  olive_branch
+* sunny_branch
+```
+
+
+<hr style="border:2px solid gray">
+
 ## HEAD <a name="head"></a>
+
+- HEAD to główny wskaźnik Git-a określający, na jakim commicie lub gałęzi aktualnie pracujesz.
+
+<em>Przykład:</em>
+HEAD -> master
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git log
+commit 4ca14eb01dfb5f9933d963e35ca9bd96d3e9d1ef (HEAD -> master)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 12:08:44 2026 +0200
+
+    Add training files.
+```
+
+1. <ins>Przypadek:</ins> HEAD -> new_test_branch, master
+
+```shell
+gitone$ git log
+commit 4ca14eb01dfb5f9933d963e35ca9bd96d3e9d1ef (HEAD -> new_test_branch, master)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 12:08:44 2026 +0200
+
+    Add training files.
+```
+- Zapis ten oznacza, że znajdujemy się obecnie na gałęzi <em>new_test_branch</em>, a gałąź <em>master</em>
+  znajduje się dokładnie w tym samym miejscu (wskazuje na ten sam commit) w historii projektu.
+- <em>-> new_test_branch</em>  strzałka oznacza, że HEAD jest przypięty do gałęzi <em>new_test_branch</em> (czyli jest to aktywna gałąź).
+- <em>, master</em> – przecinek i druga nazwa oznaczają, że gałąź <em>master</em> wskazuje na ten sam commit co <em>new_test_branch</em>.
+- Taki zapis (ten przypadek) oznacza, że dopiero co utworzono gałąź <em>new_test_branch</em> z poziomu <em>master</em> (lub przełączono się
+	na nią) i nie zrobiono jeszcze na niej żadnego nowego commita.
+- Wskaźniki HEAD oraz <em>new_test_branch</em> przesuną się do przodu na nowy commit.
+- Gałąź <em>master</em> zostanie na dotychczasowym commicie (zostanie w tyle).
+
+2. <ins>Przypadek:</ins> Dodano nowy commit do branchy testowej <em>new_test_branch</em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git log
+commit 8fa1de1ef18db10f204c88248538aafa1937fc18 (HEAD -> new_test_branch)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 14:31:51 2026 +0200
+
+    Add new text file
+
+commit 4ca14eb01dfb5f9933d963e35ca9bd96d3e9d1ef (master)
+Author: lkldz <lkldz@bleble.com>
+Date:   Mon Aug 17 12:08:44 2026 +0200
+
+    Add training files
+
+```
+
+
+<hr style="border:2px solid gray">
+
+## Fast-forward merge <a name="fforward-merge"></a>
+- To najprostszy sposób łączenia gałęzi w Git.
+- Występuje wtedy, gdy na gałęzi docelowej (np. master) nie powstały żadne nowe commit-y od momentu utworzenia gałęzi scalanej (np. feature branch).
+- W takiej sytuacji Git nie tworzy nowego "commita scalającego" (merge commit), lecz po prostu przesuwa wskaźnik gałęzi docelowej na ostatni commit scalanej gałęzi.
+- W przypadku merge do master/main najpierw przełącz na master/main (<em>git switch master</em>)
+```shell
+  git switch master --> git merge feature_branch
+```
+
+<ins>Wizualizacja:</ins>
+
+1. Stan przed scaleniem:</em>
+Gałąź feature wyszła z commita B. Od tamtej pory na main nie dodano żadnych nowych zmian.
+
+```text	
+	master:    A --- B
+    	              \
+	feature:           C --- D (HEAD)
+```
+
+2. Po wykonaniu git merge feature (fast-forward):
+- Wskaźnik main zostaje po prostu przesunięty do przodu na commit D.
+
+```text
+master / feature: A --- B --- C --- D (HEAD)
+```
+
+<ins>Przykład z opisem:</ins>
+```shell
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+936175a (HEAD -> issue_fix) Add full content for test 2 file.
+6855718 (master) Add test 2 file content.
+d32a813 Add new test 3 file.
+
+lkldz@fedora:~/training_material/git_file$ git checkout master
+Switched to branch 'master'
+lkldz@fedora:~/training_material/git_file$ git merge --ff-only issue_fix
+Updating 6855718..936175a
+Fast-forward
+ test2_file.txt | 3 ++-
+ testone.txt    | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+936175a (HEAD -> master, issue_fix) Add full content for test 2 file.
+6855718 Add test 2 file content.
+d32a813 Add new test 3 file.
+0c94e4c New text to sad file
+fc9efc1 Add text to sad file.
+```
+
+1. Branch <em>issue_fix</em> był bezpośrednio o jeden commit przed <em>master</em> (jest liniową kontynuacją),
+   więc wystarczyło wykonać standardowe scalenie w trybie <em>fast-forward.</em>
+2. W trybie <em>fast-forward</em> git nie tworzy żadnego nowego commita scalającego (merge commit),
+   a jedynie przesuwa wskaźnik <em>master-a</em> do przodu na commit 936175a.
+3. Polecenie:
+```shell 
+	git merge --ff-only
+``` 
+- Jest to swego rodzaju bezpiecznik.
+- Jeśli nie da się zrobić fast-forward, git odmówi wykonania operacji i wyświetli błąd,
+  dzięki czemu masz 100% pewności, że w historii nie pojawi się żaden commit scalający.
+
+
+<hr style="border:2px solid gray">
+
+## Not fast-forward merge <a name="not-fforward-merge"></a>
