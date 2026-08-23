@@ -52,6 +52,9 @@
 
 [git stash](#git-stash)
 
+[Detached HEAD](#detached-head)
+
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -1167,3 +1170,136 @@ plik wcześniej w ogóle nie istniał w punkcie rozgałęzienia.<br>
 <hr style="border:2px solid gray">
 
 ## git stash <a name="git-stash"></a>
+
+- Stash jest to schowek na pliki nad którymi pracuję ale muszę odłożyć je na chwilę na bok aby zająć się czymś innym.
+- Pozwala tymczasowo zdjąć wszystkie niezacommitowane zmiany z katalogu roboczego (zarówno ze strefy staged, jak i unstaged), zapisać je na specjalnym stosie i przywrócić projekt do stanu czystego (z ostatniego commita).
+- Po użyciu stasha mogę przepiąć się na inny branch (bo np. ktoś mnie poprosił o szybką zmianę na innej branchy).
+- <em>git stash</em> działa jak stos (LIFO – Last In, First Out) – można chować kolejne zestawy zmian,
+  a najnowszy zawsze ląduje na samej górze z indeksem stash@{0}.
+
+<ins>Zastosowanie:</ins>
++ Hotfix: pracuję nad nową funkcją i masz rozgrzebany kod (który jeszcze się nie kompiluje/nie działa),<br>
+  ale muszę natychmiast przełączyć się na gałąź main/hotfix, by naprawić pilnego buga.<br>
+
++ Zmiana gałęzi bez robienia śmieciowego commita.<br>
+  Tzn. git często blokuje <em>git checkout</em>/<em>git switch</em>, jeśli mam lokalne modyfikacje w tych samych plikach.<br>
+
++ Aktualizacja gałęzi (<em>git pull</em>):<br>
+  tj. chcę pobrać najnowsze zmiany ze zdalnego repozytorium na czysty stan roboczy, a dopiero potem nałożyć swoje poprawki.<br>
+
+<ins>Przykład:</ins><br>
+```shell
+lkldz@fedora:~/training_material/git_file$ git branch
+* master
+  new_test_branch
+  olive_branch
+  sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ git checkout -b summer_branch
+Switched to a new branch 'summer_branch'
+
+lkldz@fedora:~/training_material/git_file$ git branch
+  master
+  new_test_branch
+  olive_branch
+* summer_branch
+  sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ ls
+bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_file.txt  testone.txt  testtwo.txt
+
+lkldz@fedora:~/training_material/git_file$ vi bla_file.txt 
+
+lkldz@fedora:~/training_material/git_file$ git status
+On branch summer_branch
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   bla_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+lkldz@fedora:~/training_material/git_file$ git switch olive_branch 
+error: Your local changes to the following files would be overwritten by checkout:
+	bla_file.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+lkldz@fedora:~/training_material/git_file$ git checkout olive_branch 
+error: Your local changes to the following files would be overwritten by checkout:
+	bla_file.txt
+Please commit your changes or stash them before you switch branches.
+
+lkldz@fedora:~/training_material/git_file$ git stash
+Saved working directory and index state WIP on summer_branch: 66247e0 Modify bla and sunny files.
+
+lkldz@fedora:~/training_material/git_file$ git switch olive_branch 
+Switched to branch 'olive_branch'
+
+lkldz@fedora:~/training_material/git_file$ git branch
+  master
+  new_test_branch
+* olive_branch
+  summer_branch
+  sunny_branch
+```
+<b><ins>GIT STASH LIST</ins></b>
+
+- Wyświetla listę wszystkich zapisanych w schowku (stash) zmian w lokalnym repozytorium.
+
+```text
+stash@{0}: On master: poprawki w formularzu logowania
+stash@{1}: WIP on feature/login: 5002e67 dodano nową podstronę
+stash@{2}: WIP on master: 049d948 początkowa konfiguracja
+```
+
+<ins>Przykład:</ins><br>
+```shell
+lkldz@fedora:~/training_material/git_file$ git switch sunny_branch 
+Switched to branch 'sunny_branch'
+lkldz@fedora:~/training_material/git_file$ git stash list
+stash@{0}: WIP on summer_branch: 66247e0 Modify bla and sunny files.
+```
+<b><ins>GIT STASH POP</ins></b>
+- Nakłada zmiany, które zostały wcześniej zapisane poleceniem <em>git stash</em>,<br>
+  z powrotem na obecny obszar roboczy (working directory).<br>
+- W przeciwieństwie do polecenia <em><ins>git stash apply</ins></em> (które tylko kopiuje zmiany, zostawiając je w schowku),<br>
+  <em>git stash pop</em> usuwa te dane ze stosu stash po ich pomyślnym zastosowaniu.<br>
+- Stash można rozpakować na masterze albo innym branch, dlatego należy uważać, a najlepiej robić <em>git stash list</em>.<br>
+
+<ins>Nałożenie określonej pracy (wskazanie indeksu):</ins>
+```shell
+git stash pop stash@{<indeks>}
+```
+
+
+
+<ins>Przykład konfliktu po stash-u:</ins>
+
+```shell
+lkldz@fedora:~/training_material/git_file$  git stash pop
+Auto-merging bla_file.txt
+CONFLICT (content): Merge conflict in bla_file.txt
+On branch sunny_branch
+Unmerged paths:
+  (use "git restore --staged <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+	both modified:   bla_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+The stash entry is kept in case you need it again.
+```
+<ins>Przypadki użycia git stash-a:</ins>
+- <b>git stash</b> (lub <b>git stash push</b>) - chowa <ins>wszystkie śledzone</ins>, niezacommitowane zmiany i czyści katalog roboczy.
+- <b> git stash -u</b> (lub <b>--include-untracked</b>) - chowa także <ins>nowo utworzone pliki, których git jeszcze nie śledził</ins>.
+- <b>git stash save "opis zmian"</b> - chowa zmiany i nadaje im czytelny opis.
+- <b>git stash list</b> - wyświetla listę wszystkich zapisanych schowków.
+- <b>git stash pop</b> - przywraca najnowszy schowek (stash@{0}) do katalogu roboczego i usuwa go ze schowka.
+- <b>git stash apply</b> - przywraca najnowszy schowek, ale pozostawia jego kopię w schowku.
+- <b>git stash drop stash@{0}</b> - trwale usuwa konkretny wpis ze schowka.
+- <b>git stash clear</b> - usuwa wszystkie zapisane schowki.
+
+
+<hr style="border:2px solid gray">
+
+## Detached HEAD <a name="detached-head"></a>
