@@ -56,6 +56,8 @@
 
 [Cofanie zmian](#cofanie-zmian)
 
+[Rebase](#rebase)
+
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -1447,3 +1449,27 @@ git revert <hash_commita>
 git push
 ```
 
+
+<hr style="border:2px solid gray">
+
+# Rebase <a name="rebase"></a>
+
+<ins>1. Wprowadzenie:</ins>
+   
+- Rebase pozwala "przepisać" commity z "feature branch" tak, jakby powstały na bazie najnowszej wersji gałęzi master,<br>
+  dzięki czemu historia projektu zostaje czysta i liniowa, bez dodatkowych commitów scalających.
+- Są programiści, których irytuje w git log widok merge commita - bo ich zdaniem nic nie wnosi.
+- Używa się go głównie do porządkowania historii przed wysłaniem zmian do zespołu (np. przed pull requestem).
+- Rebase nadpisuje historię commitów.
+- <ins>Nie używa się rebase będąc na main/master</ins> (jest to wręcz zakazane).
+- Rebase robi się będąc na feature branch.
+
+<ins>2. Jak to działa wizualnie?:</ins><br>
+Rozwijam gałąź feature, a w międzyczasie na master pojawiły się nowe commity (C3, C4).:
+```text	
+          C1 --- C2 (feature) <- HEAD 
+         /
+--- C0 -
+         \
+          C3 --- C4 (master)
+```
