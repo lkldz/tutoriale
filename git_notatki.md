@@ -1389,3 +1389,61 @@ git checkout HEAD~2
 <hr style="border:2px solid gray">
 
 # Cofanie zmian <a name="cofanie-zmian"></a>
+
+- Sposób wycofania zmian w zależy od tego, na jakim etapie znajduje się zmiana<br>
+  tj. czy jest jeszcze niezatwierdzona, czy dodana do indeksu, czy już zacommitowana lub wysłana na serwer.
+
+<ins>Polecenia używane najczęściej do cofania zmian:</ins> 
+1. Etap - katalog roboczy (przed <em>git add</em>):<br>
+```shell
+git restore plik.txt	<-- cofa zmiany w pliku do stanu z ostatniego commita
+```
+2. Etap - staging area (po <em>git add</em>):<br>
+```shell
+git restore --staged plik.txt	<--- usuwa plik ze staging area (zostawia zmiany w pliku).
+```
+
+3. Etap - ostatni lokalny commit ale przed wysłaniem na zdalny serwer (po <em>git commit</em> ale przed <em>git push</em>):
+```shell
+git reset --soft HEAD~1	  <-- cofa commit, ale zachowuje zmiany w kodzie jako przygotowane do commita.
+```
+Zacommitowane i wypchnięte (git push)	git revert <hash_commita>	Bezpiecznie tworzy nowy commit odwracający wybraną zmianę.
+
+<ins>Przypadek 1 - Cofnięcie zmian we wszystkich plikach w projekcie:</ins>
+
+```shell
+git restore .
+```
+<ins>Przypadek 2 - Usunięcie nowo utworzonych, nieśledzonych plików (untracked):</ins>
+
+```shell
+git clean -fd
+```
+W praktyce:
+```shell
+lkldz@fedora:~/training_material/git_file$ git status
+On branch new_test_branch
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	abc.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+lkldz@fedora:~/training_material/git_file$ git clean -fd
+Removing abc.txt
+```
+
+<ins>Przypadek 3 - Całkowite usunięcie ostatniego commita wraz ze zmianami w plikach:</ins>
++ To polecenie bezpowrotnie usuwa kod z tego commita z dysku.
+```shell
+git reset --hard HEAD~1
+```
+
+<ins>Przypadek 4 - Zmiany wysłane już do zdalnego repozytorium (po <em>git push</em>):</ins>
++ Jeśli zmiany trafiły na zdalny serwer np. GitHub/GitLab i inni programiści mogli je pobrać, nie należy przepisywać historii za pomocą reset.<br>
++ Bezpieczne odwrócenie zmian to <em>git revert</em>:
++ Git utworzy nowy commit, który jest dokładnym lustrzanym przeciwieństwem wybranego commita (usuwa dodany kod, przywraca usunięty).
+```shell
+git revert <hash_commita>
+git push
+```
+
