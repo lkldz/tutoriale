@@ -54,6 +54,8 @@
 
 [Detached HEAD](#detached-head)
 
+[Cofanie zmian](#cofanie-zmian)
+
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -1303,3 +1305,87 @@ The stash entry is kept in case you need it again.
 <hr style="border:2px solid gray">
 
 ## Detached HEAD <a name="detached-head"></a>
+
+- Stan <em>detached HEAD</em> oznacza, że HEAD wskazuje bezpośrednio na konkretny commit lub tag, a nie na branch.
+- Można tego użyć aby "cofnąć się w czasie" i zobaczyć jak wyglądał dany
+  plik w przeszłości albo co zawierała dana branch.<br>
+- W tym stanie możesz swobodnie przeglądać kod, budować projekt i testować,<br>
+  ale wszelkie nowe commity nie będą przypisane do żadnej gałęzi<br>
+  i zostaną docelowo usunięte przez mechanizm czyszczenia Gita (garbage collection),<br>
+  gdy przełączysz się gdzie indziej.<br>
+- Następuje przesunięcie HEAD-a na dany commit.<br>
+- Aby powrócić do "teraźniejszości" czyli przestawić HEAD na początek: <em>git checkout master</em> 
+
+<ins>Przykład:</ins>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git log
+commit f1feafe7328c57d10632b959c476c764206c952b (HEAD)
+
+lkldz@fedora:~/training_material/git_file$ git log --oneline --graph --all
+* 66247e0 (summer_branch, master) Modify bla and sunny files.
+*   048895b Merge branch 'sunny_branch'
+|\  
+| * 3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+* | 1af60c1 Edited: sunny file. Added info about kot.
+* | e4231cb Merge branch 'sunny_branch'
+|\| 
+| * 00af6c4 Added sad file.
+| * f1feafe (HEAD) Added funny file.   <-- tu jest HEAD
+* | 4c2d1e6 Added test2 file.
+|/  
+* 649c8cc Added placeholder in sunny file.
+* 9436a5f Added sunny file.
+* feaaee5 (olive_branch) Add pending file and bla_file.txt
+| * 8fa1de1 (new_test_branch) Added new text file
+|/  
+* 4ca14eb Added training files.
+
+lkldz@fedora:~/training_material/git_file$ git switch master
+Previous HEAD position was f1feafe Added funny file.
+Switched to branch 'master'
+
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+66247e0 (HEAD -> master, summer_branch) Modify bla and sunny files.
+048895b Merge branch 'sunny_branch'
+3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+1af60c1 Edited: sunny file. Added info about kot.
+e4231cb Merge branch 'sunny_branch'
+4c2d1e6 Added test2 file.
+00af6c4 Added sad file.
+f1feafe Added funny file.
+649c8cc Added placeholder in sunny file.
+9436a5f Added sunny file.
+feaaee5 (olive_branch) Add pending file and bla_file.txt
+4ca14eb Added training files.
+```
+
+<ins>Przypadek 1 - Chcę zachować commity zrobione w stanie detached HEAD:</ins>
++ Tworzę nową gałąź w bieżącym miejscu:
+```shell
+git switch -c nazwa_nowej_gałęzi
+```
+<ins>Przypadek 2 - Chcę porzucić zmiany i wrócić do swojej pracy::</ins>
++ Przełączam się z powrotem na istniejącą gałąź (np. master(main) lub develop):
+
+<ins>Przypadek 3 - Chcę dołączyć swoje commity do istniejącej gałęzi:</ins>
++ Zapisuję zmiany na tymczasowej gałęzi:
+```shell
+git switch -c temp_branch
+```
++ Przechodzę na docelową gałąź i scalam zmiany:
+```shell
+git switch main
+git merge temp_branch
+git branch -d temp_branch
+```
+
+<ins>Przypadek 4 - Jestem na master i chcę cofnąć się o 2 commity:</ins>
+```shell
+git checkout HEAD~2
+```
+
+
+<hr style="border:2px solid gray">
+
+# Cofanie zmian <a name="cofanie-zmian"></a>
