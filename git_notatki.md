@@ -1535,7 +1535,8 @@ git rebase master
 - <b>reword</b> (lub r) – zmień tylko treść wiadomości commita.
 - <b>drop</b> (lub d) – całkowicie usuń ten commit.
 
-  ins><b>"Złota zasada" rebase:</b></ins>
+  <ins><b>"Złota zasada" rebase:</b></ins>
+  
   <em>Nigdy nie rób rebase na gałęziach publicznych/współdzielonych (takich jak main/master czy develop)</em>,<br>
   z których korzystają inni programiści.<br>
   Rebase tworzy nowe hashe commitów, czym zmusza innych do ponownego synchronizowania historii i może doprowadzić do bałaganu w repozytorium!
@@ -1544,3 +1545,89 @@ git rebase master
   <hr style="border:2px solid gray">
 
 # Interaktywny rebase <a name="interactive-rebase"></a>
+
+<ins><b>Scenariusz przykładowy:</b></ins><br>
+1. Pracuję na gałęzi <em>feature-login</em> i zrobiłem 3 małe, robocze ("bałaganiarskie") commit-y:<br>
+a1b2c3d (HEAD) fix typo in test<br>
+f4e5d6c add login form validation<br>
+9a8b7c6 add login button<br>
+
+2. Cel: Chcę połączyć te 3 commity w jeden czysty commit o nazwie "Implement user login flow with validation".
+
+
+<ins><b>Osiągnięcie celu krok-po-kroku:</b></ins><br>
+
+<ins><b>Krok 1. Uruchom interaktywny rebase</b></ins>
+
+- Wskaż, ile commitów wstecz chcesz edytować (w tym przypadku 3):
+```shell
+git rebase -i HEAD~3
+```
+
+<ins><b>Krok 2. Wybierz operacje w edytorze tekstu</b></ins>
+
+Git otworzy domyślny edytor (np. Nano, Vim lub VS Code) z listą commitów w kolejności od najstarszego (u góry) do najnowszego (na dole):
+```shell
+pick 9a8b7c6 add login button
+pick f4e5d6c add login form validation
+pick a1b2c3d fix typo in test
+
+# Commands:
+# p, pick  = use commit
+# s, squash  = use commit, but meld into previous commit
+# f, fixup  = like "squash", but discard this commit's log message
+```
+
+<ins><b> Krok 3. Zmień pick na squash (lub skrót s) przy commitach, które chcesz wchłonąć w pierwszy:</b></ins>
+```shell
+pick 9a8b7c6 add login button
+squash f4e5d6c add login form validation
+squash a1b2c3d fix typo in test
+```
+
+<ins><b> Krok 4. Zapisz plik i zamknij edytor.</b></ins>
+
+<ins><b> Krok 5. Zredaguj ostateczną wiadomość commita: </b></ins>
+```shell
+# This is a combination of 3 commits.
+# This is the 1st commit message:
+add login button
+
+# This is the commit message #2:
+add login form validation
+
+# This is the commit message #3:
+fix typo in test
+```
+
+Usuń stare teksty i wpisz jedną czystą wiadomość:
+```text
+Implement user login flow with validation
+```
+- Zapisz plik i zamknij edytor.
+
+<ins><b>Krok 6. Efekt końcowy</b></ins>
+
+Po sprawdzeniu historii za pomocą <em>git log --oneline</em>
+```shell
+7e8d9c0 (HEAD -> feature-login) Implement user login flow with validation
+```
+Trzy rozdrobnione commity zostały połączone w jeden elegancki commit z nowym hashem.
+
+<ins><b>Przydatne polecenia awaryjne:</b></ins>
+
+Gdy coś poszło nie tak:
+```shell
+git rebase --abort
+```
+Przywraca gałąź dokładnie do stanu sprzed uruchomienia rebase.
+
+<ins><b>Gdy commity były już wcześniej wysłane na zdalne repozytorium (GitHub/GitLab):</b></ins>
+
+Zwykły git push zostanie odrzucony, ponieważ historia uległa zmianie. 
+
+Użyj bezpiecznego wymuszenia:
+```shell
+git push --force-with-lease
+```
+
