@@ -1539,11 +1539,42 @@ git rebase master
 - <b>reword</b> (lub r) – zmień tylko treść wiadomości commita.
 - <b>drop</b> (lub d) – całkowicie usuń ten commit.
 
-  <ins><b>"Złota zasada" rebase:</b></ins>
+<ins><b>"Złota zasada" rebase:</b></ins>
   
   <em>Nigdy nie rób rebase na gałęziach publicznych/współdzielonych (takich jak main/master czy develop)</em>,<br>
   z których korzystają inni programiści.<br>
   Rebase tworzy nowe hashe commitów, czym zmusza innych do ponownego synchronizowania historii i może doprowadzić do bałaganu w repozytorium!
+
+<ins><b>Rebase w codzinnej praktyce:</b></ins>
+
+1. Upewnij się, że masz czysty stan na feature branch.
+	
+	+ Przed zmianą gałęzi:
+
+		1. Zacommituj swoją aktualną pracę lub tymczasowo ją schowaj:
+			```shell
+   			git stash
+			```
+
+2. Pobierz najnowsze zmiany na main/master.
+
+3. Przełącz się na gałąź główną i zaktualizuj ją ze zdalnego serwera:
+```shell
+git switch main
+git pull
+```
+
+4. Przejdź na swój feature branch i zrób rebase:
+
+Przenieś punkt startowy swojego brancha na najświeższy commit z main:
+
+```shell
+git switch moj-feature-branch
+git rebase main
+```
+
+5. Jeśli wcześniej robiłeś <em>git stash</em>, teraz przywróć zmiany poleceniem <em>git stash pop</em>.
+
 
 
   <hr style="border:2px solid gray">
