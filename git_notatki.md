@@ -60,6 +60,8 @@
 
 [Interaktywny rebase](#interactive-rebase)
 
+[Standard rebase](#standard-rebase)
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -1631,3 +1633,168 @@ Użyj bezpiecznego wymuszenia:
 git push --force-with-lease
 ```
 
+
+<hr style="border:2px solid gray">
+
+## Standard rebase <a name="standard-rebase"></a>
+
+<ins>Scenariusz 1:</ins>
+
+1. Na bazie <em>master</em> branch utworzyłem nowy branch.
+
+2. W masterze zedytowałem plik <em>sad_file.txt</em>.
+
+3. Następnie na nowym branchu też zedytowałem plik <em>sad_file.txt</em> ale wstawiłem inną zawartość. Plik dodałem do stage i zrobiłem commit.
+
+4. Będąc na feature branch zrobiłem rebase. W efekcie dostałem <em>rebase konflikt</em>.
+
+```shell
+lkldz@fedora:~/training_material/git_file$ vi sad_file.txt 
+
+lkldz@fedora:~/training_material/git_file$ git status
+On branch issue_fix
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   sad_file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+lkldz@fedora:~/training_material/git_file$ git add .
+
+lkldz@fedora:~/training_material/git_file$ git commit -m "New text to sad file"
+[issue_fix 6fe7fc7] New text to sad file
+ 1 file changed, 2 insertions(+)
+
+lkldz@fedora:~/training_material/git_file$ git rebase master
+Auto-merging sad_file.txt
+CONFLICT (content): Merge conflict in sad_file.txt     <---- KONFLIKT
+error: could not apply 6fe7fc7... New text to sad file
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+Could not apply 6fe7fc7... # New text to sad file
+
+
+lkldz@fedora:~/training_material/git_file$ cat sad_file.txt 
+<<<<<<< HEAD
+There is the beginning.
+Some fix.
+And ble.
+And sth else.
+That is what we expect.
+=======
+My version of this file.
+And sth else.
+>>>>>>> 6fe7fc7 (New text to sad file)
+lkldz@fedora:~/training_material/git_file$
+```
+
+- W vi usunąłem konflikty
+
+```shell
+lkldz@fedora:~/training_material/git_file$ vi sad_file.txt  <-- USUWAM KONFLIKTY 
+
+lkldz@fedora:~/training_material/git_file$ git add sad_file.txt   <-- POPRAWIONY PLIK DODAJĘ DO STAGING AREA
+
+lukasz@fedora:~/TEST_AUTOMATION/gitone$ git rebase --continue    <--- KONTYNUUJĘ REBASE
+[detached HEAD 0c94e4c] New text to sad file
+ 1 file changed, 1 insertion(+)
+Successfully rebased and updated refs/heads/issue_fix.
+
+lkldz@fedora:~/training_material/git_file$ git log --oneline   
+0c94e4c (HEAD -> issue_fix) New text to sad file
+fc9efc1 (master) Add text to sad file.
+66247e0 (summer_branch) Modify bla and sunny files.
+048895b Merge branch 'sunny_branch'
+3fefe9c (sunny_branch) Edited sunny file. Added info about pies.
+1af60c1 Edited: sunny file. Added info about kot.
+e4231cb Merge branch 'sunny_branch'
+4c2d1e6 Added test2 file.
+00af6c4 Added sad file.
+f1feafe Added funny file.
+649c8cc Added placeholder in sunny file.
+9436a5f Added sunny file.
+feaaee5 (olive_branch) Add pending file and bla_file.txt
+4ca14eb Added training files.
+
+lkldz@fedora:~/training_material/git_file$  cat sad_file.txt 
+There is the beginning.
+My version of this file.
+Some fix.
+And ble.
+And sth else.
+That is what we expect.
+
+lkldz@fedora:~/training_material/git_file$ git switch master
+Switched to branch 'master'
+
+lkldz@fedora:~/training_material/git_file$ cat sad_file.txt   <--- na gałęzi master jest wersja pliku która nie zawiera zmiany z feature branch
+There is the beginning.     <---- Na feature branch druga linia jest inna
+Some fix.
+And ble.
+And sth else.
+That is what we expect.
+
+lkldz@fedora:~/training_material/git_file$ git branch
+  issue_fix
+* master
+  new_test_branch
+  olive_branch
+  summer_branch
+  sunny_branch
+
+lkldz@fedora:~/training_material/git_file$ git merge issue_fix
+Updating fc9efc1..0c94e4c
+Fast-forward
+ sad_file.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+lkldz@fedora:~/training_material/git_file$ cat sad_file.txt 
+There is the beginning.
+My version of this file.
+Some fix.
+And ble.
+And sth else.
+That is what we expect.
+lukasz@fedora:~/TEST_AUTOMATION/gitone$
+```
+
+<ins>Scenariusz 2: Na master pojawił się nowy plik - chcę go na swojej feature branch</ins>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	test3_file.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+lkldz@fedora:~/training_material/git_file$ git add .
+
+lkldz@fedora:~/training_material/git_file$ git commit -m "Add new test 3 file."
+[master d32a813] Add new test 3 file.
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test3_file.txt
+
+lkldz@fedora:~/training_material/git_file$ git switch issue_fix
+Switched to branch 'issue_fix'
+
+lkldz@fedora:~/training_material/git_file$ ls
+bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_file.txt  testone.txt  testtwo.txt
+
+lkldz@fedora:~/training_material/git_file$ git rebase master
+Successfully rebased and updated refs/heads/issue_fix.
+
+lkldz@fedora:~/training_material/git_file$ ls
+bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_file.txt  test3_file.txt  testone.txt  testtwo.txt
+lkldz@fedora:~/training_material/git_file$
+```
+
+
+<hr style="border:2px solid gray">
+
+## Cofnięcie rebase <a name="cofniecie-rebase"></a>
