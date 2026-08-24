@@ -62,6 +62,8 @@
 
 [Standard rebase](#standard-rebase)
 
+[Cofnięcie rebase](#cofniecie-rebase)
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
