@@ -1798,3 +1798,63 @@ lkldz@fedora:~/training_material/git_file$
 <hr style="border:2px solid gray">
 
 ## Cofnięcie rebase <a name="cofniecie-rebase"></a>
+
+- Git przechowuje historię operacji w tzw. <em>reflog</em>, dzięki czemu można wrócić do stanu sprzed rebase'a.
+
+- Ale są warunki:
+  	+ jeszcze niczego nie usunąłem
+  	+ nie minęło zbyt dużo czasu
+- Reflog domyślnie trzyma wpisy tylko około 90 dni (i tylko lokalnie, nie trafia do zdalnego repo).
+
+- Jeśli zdążyłeś zrobić <em>git push --force</em> po rebase, lokalne cofnięcie nie naprawi automatycznie zdalnej gałęzi.<br>
+  Trzeba będzie zrobić kolejny push --force, żeby zsynchronizować zdalne repo ze starym stanem.
+
+<ins><b>Cofnięcie rebase krok-po-kroku:</b></ins>
+
+1. Sprawdzam zawartość <em>reflog</em>
+
+```shell
+git reflog
+```
+
+Przykładowy output:
+```text
+a1b2c3d HEAD@{0}: rebase finished: returning to refs/heads/main
+e4f5g6h HEAD@{1}: rebase: commit "poprawka X"
+i7j8k9l HEAD@{5}: commit: ostatni commit przed rebase
+```
+
+2. Odnajduję ostatni commit tuż przed rebase.
+
+3. Wracam do ostatniego commita dokonanego przed rebase:
+```shell
+git reset --hard HEAD@{5} <--- (zamień 5 na właściwy numer z reflogu)
+```
+
+<ins>Uwaga:</ins>
+
+<b>git reset --hard</b> kasuje zmiany w working directory.<br>
+Upewnij się, że nie masz niezapisanych zmian, które chcesz zachować.
+
+<ins>Przykład: usuwam test3_file.txt które zostało dodane na skutek rebase.</ins>
+
+```shell
+lkldz@fedora:~/training_material/git_file$ ls
+bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_file.txt  test3_file.txt  testone.txt  testtwo.txt
+
+lkldz@fedora:~/training_material/git_file$ git reflog
+0c94e4c (HEAD -> issue_fix) HEAD@{0}: reset: moving to HEAD~1
+d32a813 (master) HEAD@{1}: rebase (finish): returning to refs/heads/issue_fix
+d32a813 (master) HEAD@{2}: rebase (start): checkout master
+0c94e4c (HEAD -> issue_fix) HEAD@{3}: checkout: moving from master to issue_fix
+d32a813 (master) HEAD@{4}: commit: Add new test 3 file.
+
+lkldz@fedora:~/training_material/git_file$ git reset --hard HEAD@{3}
+HEAD is now at 0c94e4c New text to sad file
+
+lkldz@fedora:~/training_material/git_file$ ls
+bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_file.txt  testone.txt  testtwo.txt
+
+lkldz@fedora:~/training_material/git_file$ git log --oneline
+0c94e4c (HEAD -> issue_fix) New text to sad file
+```
