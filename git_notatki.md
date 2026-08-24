@@ -58,6 +58,7 @@
 
 [Rebase](#rebase)
 
+[Interaktywny rebase](#interactive-rebase)
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -1465,7 +1466,7 @@ git push
 - Rebase robi się będąc na feature branch.
 
 <ins>2. Jak to działa wizualnie?:</ins><br>
-Rozwijam gałąź feature, a w międzyczasie na master pojawiły się nowe commity (C3, C4).:
+Rozwijam gałąź <em>feature</em>, a w międzyczasie na <em>master</em> pojawiły się nowe commit-y (C3, C4).:
 ```text	
           C1 --- C2 (feature) <- HEAD 
          /
@@ -1473,3 +1474,73 @@ Rozwijam gałąź feature, a w międzyczasie na master pojawiły się nowe commi
          \
           C3 --- C4 (master)
 ```
+
+<ins>Opcja 1 - <em>git merge master</em></ins><br>
+Po wykonaniu <em>git merge master</em> na gałęzi <em>feature</em><br>
+git tworzy tzw. <em>Merge Commit (M)</em>, który łączy historię z obu gałęzi.
+```text
+         C1 --- C2 ------ M (feature) <- HEAD
+         /               /
+--- C0 -                /
+         \             /
+          C3 -------- C4 (master)
+```
+Zalety tej opcji:
+- Zachowuje dokładny przebieg pracy w czasie (drzewiasta struktura).
+- Tworzy dodatkowy commit scalający (<em>merge commit</em>).
+- Bezpieczny dla wspólnych gałęzi publicznych.
+
+---
+
+<ins>Opcja 2 - <em>git rebase master</em></ins><br>
+Po wykonaniu <em>git rebase master</em> na gałęzi <em>feature</em><br>
+git „odpina” commity C1 i C2, przewija feature do C4, a następnie aplikuje zmiany C1 i C2 na nowo jako nowe commity C1' i C2'.
+```text
+				     C0---C3---C4---C1'---C2' (feature) <- HEAD
+                    /
+--- C0 --- C3 --- C4 (master)
+```
+Zalety tej opcji:
+- Tworzy czystą, prostą, liniową historię.
+- Nie tworzy commita scalającego - przepisuje hashe commitów.
+- Może powodować problemy, w przypadku przepisywania commit-ów wysłane już na serwer.
+
+<ins><b>Dwa główne tryby użycia <em>git rebase</em></b></ins>
+- Standardowy rebase (aktualizacja gałęzi)
+- Interaktywny rebase (git rebase -i)
+
+<ins><b>Standardowy rebase (wprowadzenie)</b></ins>
++ Służy do pobrania najnowszego kodu z main/master do gałęzi roboczej (feature) przed wystawieniem Pull Requesta.
+
+```shell
+git switch feature
+git rebase master
+```
++ Jeśli wystąpi konflikt:
+	- Rozwiąż konflikt w plikach ręcznie.
+    - Dodaj pliki: <em>git add <plik>.</em>
+    - Kontynuuj: <em>git rebase --continue</em><br> 
+	(lub wycofaj cały proces: <em>git rebase --abort</em>).
+
+<ins><b>Interaktywny rebase (wprowadzenie)</b></ins>
++ Służy do sprzątania historii na lokalnej gałęzi przed jej opublikowaniem<br>
+  (np. łączenie małych commitów w jeden, zmiana opisów, usuwanie niepotrzebnych zmian):
+
+<ins>Przykładowe opcje interaktywnego rebase:</ins>
+
+- <b>git rebase -i HEAD~3</b>  <- pozwala edytować ostatnie 3 commity
+- <b>pick</b> – zachowaj commit.
+- <b>squash</b> (lub s) – połącz ten commit z poprzednim i połącz ich opisy.
+- <b>fixup</b> (lub f) – połącz z poprzednim, ale odrzuć opis tego commita.
+- <b>reword</b> (lub r) – zmień tylko treść wiadomości commita.
+- <b>drop</b> (lub d) – całkowicie usuń ten commit.
+
+  ins><b>"Złota zasada" rebase:</b></ins>
+  <em>Nigdy nie rób rebase na gałęziach publicznych/współdzielonych (takich jak main/master czy develop)</em>,<br>
+  z których korzystają inni programiści.<br>
+  Rebase tworzy nowe hashe commitów, czym zmusza innych do ponownego synchronizowania historii i może doprowadzić do bałaganu w repozytorium!
+
+
+  <hr style="border:2px solid gray">
+
+# Interaktywny rebase <a name="interactive-rebase"></a>
