@@ -512,7 +512,7 @@ docs/*.txt
 
 ## Branch <a name="branch"></a>
 
-1. Wprowadzenie
+1. <b>Wprowadzenie</b>
 	- Branch to swego rodzaju "alternatywna oś czasu".
 	- Przykładowy schemat:
 ```shell  
@@ -532,7 +532,7 @@ o |
  
 m = master
 ```
-2. Wyświetlenie, na której branchy jestem aktualnie:
+2. <b>Wyświetlenie, na której branchy jestem aktualnie:</b>
 
 ```shell
 	git branch
@@ -545,7 +545,7 @@ lkldz@fedora:~/training_material/git_file$ git branch
 * master
 ```
 
-3. Tworzenie nowej branch-y:
+3. <b>Tworzenie nowej branch-y:</b>
 
 ```shell
 	git branch nazwa_nowe_branchy
@@ -560,7 +560,7 @@ lkldz@fedora:~/training_material/git_file$ git branch
   new_test_branch
 ```
 
-4. Przełączenie na nowy branch:
+4. <b>Przełączenie na nowy branch:</b>
 
 ```shell
 	git checkout nazwa_branchy
@@ -586,7 +586,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 ```
 
-5. Alternatywne polecenie do przełączania pomiędzy branch-ami:
+5. <b>Alternatywne polecenie do przełączania pomiędzy branch-ami:</b>
 ```shell
 	git switch nazwa_branchy
 ```
@@ -600,7 +600,7 @@ lkldz@fedora:~/training_material/git_file$ git branch
   new_test_branch
 ```
 
-6. Utwórz branch i od razu przełącz się na niego/nią:
+6. <b>Utwórz branch i od razu przełącz się na niego/nią:</b>
 ```shell
 	git checkout -b nazwa_branchy
 ```
@@ -628,6 +628,72 @@ lkldz@fedora:~/training_material/git_file$ git branch
   olive_branch
 * sunny_branch
 ```
+
+7.<b><ins>Jak zmienić nazwę branch-a:</ins></b>
+
+- Sposób zmiany nazwy gałęzi (brancha) zależy od tego, czy zmiana dotyczy tylko localhosta,<br>
+  czy gałąź została już wysłana na serwer (np. GitHub/GitLab).
+
+<ins><b>A. Zmiana nazwy lokalnego brancha.</b></ins>
+
+<b>Opcja pierwsza </b>: Jesteś aktualnie na tym branchu
+
+```shell
+git branch -m nowa-nazwa-brancha
+```
+
+<b>Opcja druga</b>: Jesteś na innym branchu (np. na master)
+
+```shell
+git branch -m stara-nazwa nowa-nazwa
+```
+
+<ins><b>B. Zmiana nazwy brancha wysłanego na serwer (GitHub / GitLab).</b></ins>
+
+Jeśli branch istnieje już na zdalnym repozytorium, musisz wykonać 3 kroki:<br> 
+
+- zmienić nazwę lokalnie,
+- wypchnąć nową gałąź
+- usunąć starą z serwera.
+Zmień nazwę brancha lokalnie
+
+Krok 1. Będąc na gałęzi ze starą nazwą:
+```shell
+git branch -m nowa-nazwa-brancha
+```
+
+Krok 2. Wypchnij nową gałąź i ustaw śledzenie (upstream):
+```shell
+git push -u origin nowa-nazwa-brancha
+```
+
+Krok 3. Usuń starą gałąź ze zdalnego serwera:
+```shell
+git push origin --delete stara-nazwa-brancha
+```
+
+<b>Ważne</b>
+Jeśli inna osoba w zespole miała pobraną starą gałąź,<br> 
+może zaktualizować swoje lokalne repo (referencje do starej nazwy gałęzi) poleceniem:
+```shell
+git fetch --prune
+```
+
+<ins>Polecenie <b>git fetch --prune</b> (lub skrót git fetch -p)</ins> 
+
+```shell
+git fetch --prune
+```
+
+- Służy do posprzątania/zaktualizowania lokalnych referencji do zdalnych gałęzi (remote tracking branches),<br> 
+które zostały już usunięte na serwerze (np. na GitHubie czy GitLabie).
+
+- Kiedy ktoś z zespołu (lub Ty po zmergowaniu Pull Requesta) usunie gałąź na serwerze zdalnym, Twój lokalny Git o tym nie wie.<br>
+Zwykłe polecenie git fetch pobiera nowe commity i nowe gałęzie, ale nie usuwa starych wskaźników.<br>
+W efekcie, gdy wpiszesz git branch -r lub git branch -a, nadal widzisz "gałęzie-widma" typu origin/stara-funkcja, mimo że na serwerze one już nie istnieją.
+
+- Polecenie git fetch --prune sprawdza zdalne repozytorium i kasuje lokalne wskaźniki origin/... dla gałęzi, których już tam nie ma.
+
 
 
 <hr style="border:2px solid gray">
