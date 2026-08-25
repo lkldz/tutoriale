@@ -64,6 +64,9 @@
 
 [Cofnięcie rebase](#cofniecie-rebase)
 
+[git amend](#git-amend)
+
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -378,10 +381,11 @@ lkldz@fedora:~/training_material/git_file$ git log --oneline --graph --all
 |/  
 * 4ca14eb Added training files.
 lkldz@fedora:~/training_material/git_file$
-
+```
 
 
 <hr style="border:2px solid gray">
+
 
 ## git config <a name="git-config"></a>
 
@@ -1828,6 +1832,55 @@ lkldz@fedora:~/training_material/git_file$
 ```
 
 
+<ins>Scenariusz 3 ("conflict case"):</ins>
+
+1. Pracuję na feature branch.
+
+2. Na master w zdalnym repo pojawiły się zmiany.
+
+3. Na feature branch robię stash.
+
+4. Przełączam się na master, robię pull.
+
+5. Przełączam się z powrotem na feature branch.
+
+6. Robię rebase.
+
+7. Robię stash pop - pojawiają się konflikty. 
+
+<em>Jak rozwiązać taki konflikt?</em>
+
+Krok 1. Identyfikuję pliki z konfliktami.
+
+```shell
+git status
+```
+
+Pliki wymagające uwagi będą oznaczone w sekcji <em>Unmerged paths</em> jako <em>both modified</em>.
+
+Krok 2. Rozwiązuję konflikty w edytorze.
+
+Krok 3. Po rozwiązaniu konfliktów dodaję pliki do <em>staging area</em>.
+
+```shell
+git add
+```
+Krok 4. Czyszczę schowek (<em>stash</em>):
+
+```
+git stash list
+git stash drop stash@{0} <-- OPCJA BEZPIECZNA
+ALBO
+git stash drop <-- Opróżnienie całego schowka
+```
+
+Krok 5. Mogę kontynuować pracę albo mogę zrobić commit.
+
+Aby uniknąć tego typu konfliktów często robi się commit na feature branch, zanim<br>
+przełączy się na master w celu pobrania najnowszych zmian.
+
+
+
 <hr style="border:2px solid gray">
 
 ## Cofnięcie rebase <a name="cofniecie-rebase"></a>
@@ -1891,3 +1944,40 @@ bla_file.txt  funny_file.txt  index.html  sad_file.txt  sunny_file.txt  test2_fi
 lkldz@fedora:~/training_material/git_file$ git log --oneline
 0c94e4c (HEAD -> issue_fix) New text to sad file
 ```
+
+
+<hr style="border:2px solid gray">
+
+## git amend <a name="git-amend"></a>
+
+
+- Flaga <em>--amend</em> przy poleceniu git commit służy do poprawienia lub uzupełnienia ostatniego commita zamiast tworzenia nowego.
+
+- <em>git amend</em> Pozwala dokleić zapomniane pliki lub zmienić treść wiadomości commita.<br>
+  W praktyce Git usuwa ostatni commit i tworzy w jego miejsce nowy (z nowym identyfikatorem hash).
+
+<ins>Dwa najczęstsze zastosowania:</ins>
+
+1. <em>Zapomniałeś dodać pliku lub drobnej poprawki</em>
+
+Zrobiłeś commit, ale po chwili zauważyłeś literówkę albo pominięty plik:
+
+```shell
+git add zapomniany_plik.txt
+git commit --amend --no-edit
+```
+
+Flaga <b>--no-edit</b> mówi Gitowi, aby zachował dotychczasową wiadomość commita bez otwierania edytora tekstu.
+
+2. <em>Chcesz zmienić tylko treść ostatniej wiadomości</em>
+
+Zrobiłeś commit ze złą nazwą i chcesz ją tylko poprawić
+
+```shell
+git commit --amend -m "Nowy, poprawny opis commita"
+```
+
+- Hash ostatniego commita - Ostatni hash zostaje zastąpiony nowym
+
+- Nie używaj --amend na commitach, które zostały już wysłane na serwer (git push) do współdzielonej gałęzi.
+Ponieważ --amend przepisuje hash ostatniego commita, zwykły git push zostanie odrzucony i będzie wymagał git push --force-with-lease, co może namieszać w pracy innym osobom korzystającym z tej samej gałęzi.
