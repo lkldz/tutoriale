@@ -2105,13 +2105,17 @@ Ponieważ --amend przepisuje hash ostatniego commita, zwykły git push zostanie 
 -  Kiedy chcę zrobić merge mojej feature branchy do main, to najpierw zrobić pull na main i wtedy merge.
 
 
-<ins><b>Przypadek 1: Chcę zaktualizować swój feature-branch o najnowszy kod ze zdalnego serwera:</b></ins>
+<ins><b>Przypadek 1: Chcę zaktualizować swój feature-branch o najnowszy kod ze zdalnego serwera,<br>
+a następnie wciągnąć gotowy feature-branch do lokalnego main</b></ins>
+
+<b>FAZA 1:</b>
+
 ```shell
 git fetch origin main 
 git rebase origin/main
 ```
 - <em>git fetch origin main</em> NIE zaktualizuje lokalnego brancha main.<br>
-Zaktualizuje jedynie ukryty wskaźnik zdalny origin/main ("kopię" zdalnego repo w lokalnej bazie Gita).<br>
+Zaktualizuje jedynie ukryty wskaźnik zdalny origin/main.<br>
 Lokalny branch main pozostanie dokładnie w takim stanie, w jakim był.
 
 <b>Co dokładnie robi <em>git fetch origin main</em>?</b>
@@ -2133,36 +2137,36 @@ git rebase origin/main
 ```
 W ten sposób Twój feature-branch ma najświeższy kod z serwera, a Ty nie musiałeś nawet przełączać się na lokalny main.
 
+<b> FAZA 2:</b> 
 
-2. Zakończenie pracy (lokalny merge)
-Wciągnąć gotowy feature-branch do lokalnego main
+Zakończenie pracy - lokalny merge.
+
+Wciągnięcie gotowego feature-branch do lokalnego main:
+
+```shell
 git switch main 
 git pull 
 git merge feature-branch 
 git push
+```
 
-<!-- 
-A jeśli NAPRAWDĘ chcesz zaktualizować lokalny main?
+<ins> Dlaczego w FAZIE 2 trzeba zrobić pull na main?</ins>
 
-Wtedy musisz jawnie go zaktualizować poleceniem pull lub scalić pobrany origin/main
-git switch main
-git pull
+Jeśli nie zrobimy git pull, lokalny main będzie przestarzały<br> 
+i przy próbie git push serwer odrzuci zmiany.
 
-Dlaczego w scenariuszu 2 trzeba zrobić pull na main?
 
-Kiedy robisz lokalny merge do main, Twój lokalny main staje się gałęzią, na której faktycznie łączysz kod. Jeśli nie zrobisz wcześniej git pull, Twój lokalny main będzie przestarzały — i przy próbie git push po mergowaniu serwer odrzuci Twoje zmiany (rejected / non-fast-forward).
+<ins><b>PRAKTYCZNA UWAGA</b></ins>
 
-Uwaga: Jak to wygląda przy Pull / Merge Requestach (GitHub / GitLab)?
+W większości firm i zespołów programistycznych nie merguje się gałęzi lokalnie na swoim komputerze.
 
-W większości firm i zespołów programistycznych nie merguje się gałęzi lokalnie na swoim komputerze:
+1. Kończysz pracę na feature-branch.
 
-    Kończysz pracę na feature-branch.
+2. Wypychasz go na serwer: <em>git push origin feature-branch</em>
 
-    Wypychasz go na serwer: git push origin feature-branch.
+3. Otwierasz Pull Request (PR) na GitHubie / GitLabie.
 
-    Otwierasz Pull Request (PR) na GitHubie / GitLabie.
+4. Klikasz przycisk Merge w przeglądarce po przejściu code review.
 
-    Klikasz przycisk Merge w przeglądarce po przejściu code review.
-
-    Dopiero wtedy u siebie na komputerze robisz git switch main && git pull, żeby pobrać finalny stan projektu.
--->
+5. Dopiero wtedy u siebie na komputerze robisz<br>
+   <em>git switch main && git pull</em>, żeby pobrać finalny stan projektu.
