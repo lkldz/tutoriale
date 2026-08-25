@@ -66,6 +66,8 @@
 
 [git amend](#git-amend)
 
+[git fetch vs git pull](#fetch-pull)
+
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -2047,3 +2049,120 @@ git commit --amend -m "Nowy, poprawny opis commita"
 
 - Nie używaj --amend na commitach, które zostały już wysłane na serwer (git push) do współdzielonej gałęzi.
 Ponieważ --amend przepisuje hash ostatniego commita, zwykły git push zostanie odrzucony i będzie wymagał git push --force-with-lease, co może namieszać w pracy innym osobom korzystającym z tej samej gałęzi.
+
+
+<hr style="border:2px solid gray">
+
+## git fetch vs git pull <a name="fetch-pull"></a>
+
+- Główna różnica: <b>git pull = git fetch + git merge</b>
+
+<b><ins>git fetch</b></ins> 
+
+- Pobiera zmiany ze zdalnego serwera (np. GitHub/GitLab) tj. wszystkie nowe commity, gałęzie i tagi do lokalnego repo.
+
+- Nie zmienia plików w katalogu roboczym ani nie przesuwa znacznika aktualnej gałęzi.
+
+- Pobiera historię ze zdalnego serwera.
+
+- Aktualizuje jedynie zdalne wskaźniki (tzw. remote tracking branches, np. origin/main).
+
+- Jest całkowicie bezpieczne ponieważ nie wywoła konfliktów ani nie nadpisze pracy w toku.
+
+- Pozwala sprawdzić, co zmienili inni, zanim zdecydujemy się to scalić (sprawdzamy zmiany za pomocą <em>git log origin/master</em> lub <em>git diff origin/master</em>).
+
+- Bezpieczny podgląd zmian.
+
+- <em>git fetch</em> mogę użyć aby upewnić się czy zmiany które niedawno ktoś wypchnął do zdalnego repo nie psują tego nad czym teraz pracuję na swojej feature branch.
+
+<br>
+<b><ins>git pull</ins></b> 
+
+- Pobiera zmiany ze zdalnego serwera a następnie natychmiast próbuje scalić (merge) pobrane zmiany do gałęzi, na której aktualnie się znajdujesz.
+  
+- Pobiera historię ze zdalnego serwera.
+
+- Bezpośrednio modyfikuje Twoje lokalne pliki.
+
+- Jeśli na serwerze i localhost zmieniono te same linie, polecenie od razu wyrzuci merge conflict.
+
+- Spore ryzyko konfliktów.
+
+- Szybka aktualizacja bieżącej pracy.
+
+<br>
+<ins><b>Praktyczne uwagi:</b></ins>
+
+- <ins>Używaj <em>git pull</em>, gdy masz <em>"czysty stan repozytorium"</em></ins>,<br>
+  tj. wiesz, co zostało wypchnięte na serwer i chcesz po prostu zaktualizować swój projekt do najnowszego stanu.
+
+- <ins>Używaj <em>git fetch</em>, gdy pracujesz nad czymś lokalnie</ins><br>
+  i chcesz najpierw sprawdzić historię zdalną bez ryzyka zepsucia bieżącej gałęzi<br>
+  lub gdy chcesz zaktualizować bazę przed wykonaniem git rebase origin/main.
+
+- <b><em>git fetch origin main</em></b> używać wtedy gdy chcę mieć na feature branch kod zgodny ze zdalnym <em>main-em.</em><br>
+
+-  Kiedy chcę zrobić merge mojej feature branchy do main, to najpierw zrobić pull na main i wtedy merge.
+
+
+<ins><b>Przypadek 1: Chcę zaktualizować swój feature-branch o najnowszy kod ze zdalnego serwera:</b></ins>
+```shell
+git fetch origin main 
+git rebase origin/main
+```
+- <em>git fetch origin main</em> NIE zaktualizuje lokalnego brancha main.<br>
+Zaktualizuje jedynie ukryty wskaźnik zdalny origin/main ("kopię" zdalnego repo w lokalnej bazie Gita).<br>
+Lokalny branch main pozostanie dokładnie w takim stanie, w jakim był.
+
+<b>Co dokładnie robi <em>git fetch origin main</em>?</b>
+
+Krok 1: Łączy się ze zdalnym serwerem (origin).
+
+Krok 2: Pobiera nowe commity z gałęzi main.
+
+Krok 3: Zapisuje je lokalnie pod wskaźnikiem origin/main.
+
+Krok 4: Nie dotyka lokalnego brancha main ani żadnych plików na dysku.
+
+<b>Dlaczego to wystarcza do rebase?</b>
+
+1. Gdy jesteś na swoim feature-branch, nie potrzebujesz aktualizować lokalnego main. 
+Możesz zrobić rebase bezpośrednio na pobrany wskaźnik zdalny:
+```shell
+git rebase origin/main
+```
+W ten sposób Twój feature-branch ma najświeższy kod z serwera, a Ty nie musiałeś nawet przełączać się na lokalny main.
+
+
+2. Zakończenie pracy (lokalny merge)
+Wciągnąć gotowy feature-branch do lokalnego main
+git switch main 
+git pull 
+git merge feature-branch 
+git push
+
+<!-- 
+A jeśli NAPRAWDĘ chcesz zaktualizować lokalny main?
+
+Wtedy musisz jawnie go zaktualizować poleceniem pull lub scalić pobrany origin/main
+git switch main
+git pull
+
+Dlaczego w scenariuszu 2 trzeba zrobić pull na main?
+
+Kiedy robisz lokalny merge do main, Twój lokalny main staje się gałęzią, na której faktycznie łączysz kod. Jeśli nie zrobisz wcześniej git pull, Twój lokalny main będzie przestarzały — i przy próbie git push po mergowaniu serwer odrzuci Twoje zmiany (rejected / non-fast-forward).
+
+Uwaga: Jak to wygląda przy Pull / Merge Requestach (GitHub / GitLab)?
+
+W większości firm i zespołów programistycznych nie merguje się gałęzi lokalnie na swoim komputerze:
+
+    Kończysz pracę na feature-branch.
+
+    Wypychasz go na serwer: git push origin feature-branch.
+
+    Otwierasz Pull Request (PR) na GitHubie / GitLabie.
+
+    Klikasz przycisk Merge w przeglądarce po przejściu code review.
+
+    Dopiero wtedy u siebie na komputerze robisz git switch main && git pull, żeby pobrać finalny stan projektu.
+-->
