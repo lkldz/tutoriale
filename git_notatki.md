@@ -68,6 +68,7 @@
 
 [git fetch vs git pull](#fetch-pull)
 
+[Origin](#origin)
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -2170,3 +2171,32 @@ W większości firm i zespołów programistycznych nie merguje się gałęzi lok
 
 5. Dopiero wtedy u siebie na komputerze robisz<br>
    <em>git switch main && git pull</em>, żeby pobrać finalny stan projektu.
+
+<hr style="border:2px solid gray">
+
+## Origin <a name="origin"></a>
+
+```shell
+git push origin feature-branch
+```
+- Powyższe polecenie wysyła lokalne commit-y z feature-branch na zdalny serwer - tj. origin do gałęzi o tej samej nazwie.
+
+- Polecenie krok-po-kroku:
+
+    + <em>git push</em> — przesyła historię commitów i pliki z lokalnego repo do zdalnego repo.
+
+    + <ins><b>origin</b></ins> — <em>domyślna nazwa zdalnego serwera (alias dla adresu URL repozytorium na GitHubie, GitLabie czy Bitbuckecie).</em>
+
+    + feature-branch — nazwa gałęzi, którą chcesz wysłamy na zdalny serwer.
+
+- <ins>Jeśli gałąź jeszcze nie istnieje na zdalnym serwerze?</ins>
+
+  	+ Git utworzy na GitHubie/GitLabie nową gałąź o nazwie feature-branch (wraz z przesyłanym na niej kodem).
+
+- <ins>Jeśli gałąź już istnieje na zdalnym serwerze?</ins>
+
+  + Git dopisze do niej nowe commity (o ile nie ma konfliktów historii).
+
+<hr style="border:2px solid gray">
+
+## Upstream <a name="upstream"></a>
