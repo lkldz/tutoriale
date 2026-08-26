@@ -2221,6 +2221,19 @@ git push -u origin feature-branch
    Tzn. dzięki temu "śledzeniu" przy kolejnych "wypchnięciach" na tej gałęzi wystarczy wpisać samo krótkie:
 	<em>git push</em> zamiast podawać za każdym razem origin feature-branch.
 
+<em>Przykład:</em>
+
+```shell
+git push -u origin name
+```
+- <em>git push nazwa_remote_repo nazwa_branchy</em>
+
+- u = upstream
+
+- Jeśli użyję upstreama to podczas kolejnego pusha nie muszę wpisywać "git push origin name_of_branch", wystarczy sam "git push"
+czyli znana jest nazwa zdalnego repo (origin) oraz nazwa branchy (tutaj: main)<br>
+Czyli upstream jest swego rodzaju linkiem.
+
 
 <hr style="border:2px solid gray">
 
@@ -2313,3 +2326,39 @@ git push origin --delete v1.0.0
 <hr style="border:2px solid gray">
 
 ## git remote <a name="git-remote"></a>
+
+- Sprawdzenie czy localhost jest już "powiązany" z jakimś zdalnym repo:
+
+```shell
+git remote -v 
+```
+
+<em><ins>Przykład:</ins></em>
+
+```shell
+lkldz@fedora:~/training_material/git_file$git remote -v
+origin	https://github.com/lkldz/blabla.git (fetch)
+origin	https://github.com/lkldz/blabla.git (push)
+```
+
+- Jeśli <em>git remote -v</em> zwraca pusty output to oznacza, że nie mam podpiętego zdalnego repo.
+
+<ins><b>Powiązanie localhosta ze zdalnym repo:</b></ins>
+
+```shell
+git remote add name url
+
+Przykład:
+git remote add origin https://github.com/lkldz/blabla.git
+```
+
+- <em>git remote add</em> <- oznacza, że chcę dodać zdalne repo (remote)
+ 
+- Zgodnie z w/w składnią <em>origin</em> to tylko nazwa repo którego url podaję obok
+
+- Ogólnie przyjętą praktyką jest nazywanie zdalnego repo jako <em>origin</em> ALE można się uprzeć i zmienić tę nazwę:
+  
+```shell
+git remote rename stara_nazwa nowa_nazwa
+```
+
