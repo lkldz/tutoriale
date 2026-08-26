@@ -82,6 +82,7 @@
 
 [Modele pracy z repozytorium](#work-models)
 
+[Pull requests](#pull-request)
 
 ***********************************************************************
 <hr style="border:2px solid gray">
@@ -2441,3 +2442,52 @@ git push -u origin feature/moje-zadanie
 
 - Code Review.
 
+
+<hr style="border:2px solid gray">
+
+## Pull Requests <a name="pull-request"></a>
+
+<b><ins>Pull request w modelu firmowym</ins></b>
+
+<ins>Krok 1. Wypchnij swój branch na serwer.</ins>
+
+- W terminalu upewnij się, że wszystkie commity są zrobione i wyślij gałąź do repozytorium firmowego.
+
+```shell
+git status
+git log
+git push -u origin feature/moje-zadanie
+```
+
+<ins>Krok 2. Kliknij powiadomienie o nowej gałęzi.</ins>
+
+- Na GitHubie / GitLabie wejdź na stronę repozytorium firmy.
+
+- Zaraz po wykonaniu git push u góry ekranu pojawi się żółty baner z przyciskiem:
+	+ GitHub: <em>„Compare & pull request”</em>
+
+    + GitLab: <em>„Create merge request”</em>
+
+<ins>Krok 3. Ustaw gałęzie docelowe i opisz zmiany.</ins>
+
+- Konfiguracja PR - upewnij się, że gałęzie są ustawione poprawnie:
+
+    + <em><b>base</b></em> (dokąd mają trafić zmiany): <em>main</em> (lub develop – zależnie od standardu w firmie)
+
+    + <em><b>compare</b></em> (skąd bierzesz zmiany): <em>feature/moje-zadanie</em>
+
+<ins>Krok 4. Wypełnij formularz:</ins>
+
++ Title - Krótki, zwięzły tytuł (często z numerem zadania z Jiry, np. [PROJ-123] Dodanie walidacji logowania).
+
++ Description - Krótki opis: co zostało zmienione, dlaczego i jak to przetestować.
+  
+<ins>Krok 5. Przypisz recenzentów i utwórz PR:</ins>
+
+- Code Review:
+
+	+ W sekcji Reviewers po prawej stronie wybierz 1–2 osoby z zespołu, które mają sprawdzić Twój kod.
+
+	+ W sekcji Assignees przypisz siebie.
+
+	+ Kliknij zielony przycisk „Create pull request”.
