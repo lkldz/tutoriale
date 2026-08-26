@@ -84,6 +84,11 @@
 
 [Pull requests](#pull-request)
 
+[git blame](#git-blame)
+
+[git show](#git-show)
+
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -1166,6 +1171,12 @@ index 84f4ee3..bd04e4a 100644
 2. <em>@@ -1,3 +1,4 @@</em>:
    * -1,3 — w starej wersji ten fragment zaczynał się od 1. linii i liczył 3 linie;
    * +1,4 — w nowej wersji ten fragment zaczyna się od 1. linii i po zmianach liczy 4 linie
+3. Zmiany w pliku:
+ - "-" (zazwyczaj czerwony) – linia usunięta.
+
+ - "+" (zazwyczaj zielony) – linia dodana.
+
+ - Brak znaku (spacja) – linia kontekstowa (pozostała bez zmian, wyświetla się tylko po to, by łatwiej było zorientować się, w którym miejscu pliku zaszła modyfikacja).
 
 
 - Porównianie dwóch commit-ów:<br>
@@ -2543,3 +2554,112 @@ git push -u origin fix-some-bug
 git fetch upstream main
 git rebase upstream/main
 ```
+
+
+<hr style="border:2px solid gray">
+
+## git blame <a name="git-blame"></a>
+
+- Służy do sprawdzania historii modyfikacji pliku linijka po linijce.
+
+- Dla każdego wiersza wyświetla hash ostatniego commitu, autora zmiany, datę jej wprowadzenia oraz samą treść kodu.
+
+<em>Polecenie:</em>
+```shell
+git blame sciezka/do/pliku.js
+```
+
+<ins>Przykład:</ins>
+```shell
+a1b2c3d4 (Jan Kowalski 2026-03-15 10:45:12 +0200 1) const API_URL = "https://api.example.com";
+e5f6g7h8 (Anna Nowak   2026-04-02 14:20:00 +0200 2) function fetchData() {
+e5f6g7h8 (Anna Nowak   2026-04-02 14:20:00 +0200 3)   return fetch(API_URL);
+a1b2c3d4 (Jan Kowalski 2026-03-15 10:45:12 +0200 4) }
+```
+
+- wyświetlenie adresu e-mail zamiast nazwiska:
+
+```shell
+git blame -e main.py
+```
+
+- Mając hash commitu uzyskany z git blame, pełny kontekst zmiany (opis, inne zmodyfikowane pliki i powiązane zadanie)<br>
+  sprawdza się poleceniem <em>git show</em>
+
+
+
+<hr style="border:2px solid gray">
+
+## git show <a name="git-show"></a>
+
+1. Co zwraca polecenie <em>git show</em>?
+
+- metadane commitu – pełny hash, autor, data oraz wiadomość commitu.
+
+- diff (różnicę w kodzie) – dokładne zmiany linijka po linijce wprowadzone w tym commicie (dodane linie zaznaczone na zielono/ze znakiem +, usunięte na czerwono/ze znakiem -).
+
+2. Domyślnie (wywołane bez argumentów) pokazuje szczegóły ostatniego commitu (HEAD).
+```shell
+git show
+```
+
+3. Podgląd konkretnego commitu:
+```shell
+git show a1b2c3d4
+```
+
+4. Podgląd zmian tylko w jednym pliku z danego commitu:
+```shell
+git show a1b2c3d4 -- sciezka/do/pliku.js
+```
+
+5. Podgląd szczegółów taga (wraz z podpisem i wiadomością):
+```shell
+git show v2.1.0
+```
+
+6. Tylko lista zmienionych plików (bez diffa):
+```shell
+git show --stat a1b2c3d4
+git show --name-only a1b2c3d4
+```
+
+7. Tylko metadane i treść commitu (bez diffa):
+```shell
+git show -s a1b2c3d4
+```
+
+<ins>Przykład:</ins>
+```shell
+ble$ git show 9f4a2b1
+
+commit 9f4a2b18c02e5b7413d94bfa293425b1285098d6 (HEAD -> main, origin/main)
+Author: Jan Kowalski <jan.kowalski@example.com>
+Date:   Wed Aug 26 14:15:30 2026 +0200
+
+    fix: popraw walidację adresu email podczas rejestracji
+    
+    Dodano sprawdzanie poprawności domeny oraz usunięto
+    niepotrzebne białe znaki przed parsowaniem.
+
+diff --git a/src/validators.js b/src/validators.js
+index e69de29..b835923 100644
+--- a/src/validators.js
++++ b/src/validators.js
+@@ -12,6 +12,8 @@ function validateUser(data) {
+   if (!data.username) {
+     return false;
+   }
+-  return data.email.includes('@');
++  const cleanEmail = data.email.trim();
++  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++  return emailRegex.test(cleanEmail);
+ }
+```
+Znak - (minus) na początku wiersza w git show oznacza linię, która znajdowała się w kodzie przed tym commitem, ale została z niego usunięta.
+
++ "-" (zazwyczaj czerwony) – linia usunięta.
+
++ "+" (zazwyczaj zielony) – linia dodana.
+
++ Brak znaku (spacja) – linia kontekstowa (pozostała bez zmian, wyświetla się tylko po to, by łatwiej było zorientować się, w którym miejscu pliku zaszła modyfikacja).
