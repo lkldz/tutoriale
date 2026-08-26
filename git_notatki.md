@@ -72,6 +72,10 @@
 
 [Upstream](#upstream)
 
+[Tagi](#tags)
+
+[git remote](#git-remote)
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -2221,3 +2225,91 @@ git push -u origin feature-branch
 <hr style="border:2px solid gray">
 
 ## Tagi <a name="tags"></a>
+
+- Tagi w Git to trwałe etykiety wskazujące na konkretny commit w historii projektu.
+
+- Służą jako niezmienne „zakładki”, najczęściej używane do oznaczania wydań wersji produkcyjnych (np. v1.0.0, v2.4.1-beta).
+
+- Rozróżnia się dwa rodzaje tagów: "lekki tag" oraz "opisany tag".
+
+<ins>Częste pytanie:</ins>
+
+<em>Różnica między Tag a Gałąź (Branch)</em>
+
++ Gałąź (Branch): <ins>Dynamiczny wskaźnik</ins>, który przesuwa się do przodu z każdym nowym commitem.
+
++ Tag: <ins>Statyczny wskaźnik</ins>, który zostaje przypięty na stałe do jednego konkretnego commita i nigdy się sam nie przesuwa.
+    
+
+<ins><b>Lekki TAG (Lightweight)</b></ins>
+ 
+ ```shell
+ git tag v1.0.0
+```
+- Chodzi tylko o ustawienie wskaźnika na hash commita.
+
+- Zastosowanie: szybkie, lokalne i tymczasowe oznaczenia.
+ 
+
+<ins><b>TAG opisany (Annotated)</b></ins>
+
+```shell
+git tag -a v1.0.0 -m "Wersja 1.0.0"
+```
+- Zawiera hash, autora, datę, opis oraz sumę kontrolną (pełny obiekt Gita).
+
+- Zastosowanie: oficjalne wersje, wydania produkcyjne (Releases).
+ 
+<ins><b>Polecenia związane z TAG-ami:</b></ins> 
+
++ <em>Wyświetlenie listy tagów:</em>
+
+```shell
+ git tag
+``` 
+
++ <em>Otagowanie wcześniejszego commita z historii:</em>
+
+```shell
+git tag -a v1.0.0 <hash_commita> -m "Wydanie v1.0.0"
+```
+ 
++ <em>Szczegółowy podgląd taga i przypisanego commita:</em>
+
+```shell
+git show v1.0.0
+``` 
+
++ <em>Usunięcie taga lokalnie:</em>
+
+```shell
+git tag -d v1.0.0
+```
+ 
+<ins><b>Wysyłanie tagów na serwer (GitHub / GitLab):</b></ins>
+
+- Zwykłe polecenie git push nie wysyła tagów automatycznie.
+
+- Należy je wypchnąć jawnie:
+
+- Wypchnięcie jednego taga:
+
+```shell
+git push origin v1.0.0
+```
+
+- Wypchnięcie wszystkich lokalnych tagów naraz:
+
+```shell
+git push origin --tags
+```
+
+<ins><b>Usunięcie taga ze zdalnego serwera:</b></ins>
+```shell
+git push origin --delete v1.0.0
+```
+
+
+<hr style="border:2px solid gray">
+
+## git remote <a name="git-remote"></a>
