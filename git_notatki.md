@@ -70,6 +70,8 @@
 
 [Origin](#origin)
 
+[Upstream](#upstream)
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -2197,6 +2199,25 @@ git push origin feature-branch
 
   + Git dopisze do niej nowe commity (o ile nie ma konfliktów historii).
 
+
+
 <hr style="border:2px solid gray">
 
 ## Upstream <a name="upstream"></a>
+
+<b>Flaga: -u (lub --set-upstream)</b>
+
+1. Przy pierwszym "wypychaniu" (do zdalnego serwera) nowo utworzonej gałęzi warto dodać flagę -u:
+
+```shell
+git push -u origin feature-branch
+```
+
+2. Flaga -u ustawia tzw. śledzenie (tracking).<br>
+   Tzn. dzięki temu "śledzeniu" przy kolejnych "wypchnięciach" na tej gałęzi wystarczy wpisać samo krótkie:
+	<em>git push</em> zamiast podawać za każdym razem origin feature-branch.
+
+
+<hr style="border:2px solid gray">
+
+## Tagi <a name="tags"></a>
