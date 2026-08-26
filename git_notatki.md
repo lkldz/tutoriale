@@ -2447,7 +2447,7 @@ git push -u origin feature/moje-zadanie
 
 ## Pull Requests <a name="pull-request"></a>
 
-<b><ins>Pull request w modelu firmowym</ins></b>
+<b><ins>I. Pull request w modelu firmowym</ins></b>
 
 <ins>Krok 1. Wypchnij swój branch na serwer.</ins>
 
@@ -2491,3 +2491,55 @@ git push -u origin feature/moje-zadanie
 	+ W sekcji Assignees przypisz siebie.
 
 	+ Kliknij zielony przycisk „Create pull request”.
+
+---
+
+
+<b><ins>II. Pull request w modelu open-source</ins></b>
+
+<ins> Krok 1.Tworzysz fork i klonujesz ten fork na localhost:</ins>
+
+- Na stronie GitHub/GitLab klikasz przycisk Fork.
+
+- Następnie klonujesz swój fork na komputer. 
+
+- Twój lokalny Git automatycznie nazwie go jako origin:
+
+```shell
+git clone https://github.com/TwojNick/projekt-opensource.git
+```
+
+<ins> Krok 2. Dodajesz oryginalne repozytorium jako upstream: </ins>
+
+- W terminalu łączysz lokalny projekt z oryginalnym źródłem, aby móc pobierać aktualizacje:
+
+```shell
+git remote add upstream https://github.com/AutorProjektu/projekt-opensource.git
+```
+
+<ins> Krok 3.Tworzysz branch i wypychasz na SWÓJ fork: </ins>
+
+- Pracujesz na nowej gałęzi i wypychasz ją do siebie (origin):
+
+```shell
+git switch -c fix-some-bug
+# ... commity ...
+git push -u origin fix-some-bug
+```
+
+<ins> Krok 4.Otwierasz Pull Request:</ins>
+
+- W przeglądarce wchodzisz na GitHub i tworzysz Pull Request:
+
+	+ <b>Baza (dokąd)</b>: AutorProjektu/projekt-opensource <- main
+
+	+ <b>Porównanie (skąd)</b>: TwojNick/projekt-opensource <- fix-some-bug
+
+<ins> Krok 5. Jak zaktualizować swój fork o zmiany w orginalnym (projektowym) repo?</ins>
+
+- Gdy autorzy projektu dodadzą nowe commity, pobierasz je z upstream:
+
+```shell
+git fetch upstream main
+git rebase upstream/main
+```
