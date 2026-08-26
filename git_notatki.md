@@ -76,6 +76,13 @@
 
 [git remote](#git-remote)
 
+[Klonowanie zdalnego repozytorium](#git-clone)
+
+[Fork](#fork)
+
+[Modele pracy z repozytorium](#work-models)
+
+
 ***********************************************************************
 <hr style="border:2px solid gray">
 
@@ -2361,4 +2368,76 @@ git remote add origin https://github.com/lkldz/blabla.git
 ```shell
 git remote rename stara_nazwa nowa_nazwa
 ```
+
+
+<hr style="border:2px solid gray">
+
+## Klonowanie zdalnego repozytorium <a name="git-clone"></a>
+
+```shell
+git clone https://github.com/lkldz/bleble.git
+```
+
+
+<hr style="border:2px solid gray">
+
+## Fork <a name="fork"></a>
+
+- Forkowanie stosuje się niemal wyłącznie w projektach Open Source<br>
+  lub w bardzo rygorystycznych modelach bezpieczeństwa (np. dla zewnętrznych kontraktorów z ograniczonym zaufaniem).
+
+- Forkowanie to w istocie tworzenie "kopii" kodu z danego repo (np.: projektu open-source) na swoim koncie GitHub/GitLab.<br>
+  Następnie wykonuje się  <em>git clone</em>
+ 
+- W 95% firm komercyjnych NIE robisz forka. Klonujesz bezpośrednio repozytorium firmowe.
+
+
+<hr style="border:2px solid gray">
+
+## Modele pracy z repozytorium <a name="work-models"></a>
+
+<ins><b>1. Model "firmowy"</b></ins>
+
+- Dostajesz uprawnienia do repozytorium organizacji.
+
+- Klonujesz bezpośrednio repozytorium firmy.
+
+- Tworzysz branch bezpośrednio w repozytorium firmowym.
+
+-  PR/Merge: <em>twoj_branch -> main</em> (wewnątrz tego samego repozytorium).
+
+<ins><b>2. Model "open source"</b></ins>
+
+- Projekty publiczne, otwarte biblioteki.
+
+- Robię <em>fork</em> na swoje prywatne konto (GitHub,GitLab, etc.) i klonuję fork na localhost.
+
+- Tworzę branch na swoim forku.
+
+- PR/Merge: <em>twoje-konto:twoj-branch -> oryginalne-repo:main</em>
+
+
+<ins><b>Dzień w nowej pracy</b></ins>
+
+1. Otrzymujesz dostęp do repozytorium.
+
+2. Klonujesz repozytorium projektowe (firmowe) na swój komputer:
+
+```shell
+git clone git@github.com:nazwa-firmy/nazwa-projektu.git
+```
+
+3. Codzienna praca - tworzenie gałęzi i wypychanie zmian do repozytorium zdalnego-firmowego.
+
+```shell
+git switch -c feature/moje-zadanie
+# ... pisanie kodu, commity ...
+git push -u origin feature/moje-zadanie
+```
+
+4. Otwarcie Pull Requesta:
+
+- Otwierasz Pull Request wewnątrz repozytorium firmowego z gałęzi feature/moje-zadanie do main (lub develop).
+
+- Code Review.
 
