@@ -164,13 +164,13 @@ Jeśli instalujesz pakiety globalnie (na cały system), masz problem — nie mo�
 
 ![Screenshot From 2026-09-02 12-07-25.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Screenshot%20From%202026-09-02%2011-50-47.png)
 
-![[Pasted image 20260902120946.png]]
+![Pasted image 20260902120946.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902120946.png)
 
-![[Pasted image 20260902121432.png]]
+![Pasted image 20260902121432.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902121432.png)
 
 - Po uruchomieniu nowego terminala venv powinien zostać aktywowany przez VSCode
 
-![[Pasted image 20260902121539.png]]
+![Pasted image 20260902121539.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902121539.png)
 
 
 
@@ -212,19 +212,19 @@ pip install requests pandas
 deactivate
 ```
 
-![[Pasted image 20260902133214.png]]
+![Pasted image 20260902133214.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902133214.png)
 
 - Instaluję paczkę requests
 
-![[Pasted image 20260902141324.png]]
+![Pasted image 20260902141324.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902141324.png)
 
-![[Pasted image 20260902141437.png]]
+![Pasted image 20260902141437.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902141437.png)
 
 - instaluję robotframework
 
-![[Pasted image 20260902141522.png]]
+![Pasted image 20260902141522.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902141522.png)
 
-![[Pasted image 20260902141556.png]]
+![Pasted image 20260902141556.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902141556.png)
 
 
 ### Dlaczego warto używać virtual environment ?
