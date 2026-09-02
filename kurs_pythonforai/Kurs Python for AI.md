@@ -31,7 +31,7 @@
 
 ### Python
 
-  ![[Pasted image 20260717141032.png]]
+  ![Pasted image 20260717141032.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Pasted%20image%2020260717141032.png)
 
 
 - developed by Microsoft;
