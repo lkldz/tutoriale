@@ -436,7 +436,6 @@ Te pliki (`output.xml`, `log.html`, `report.html`) to raporty generowane po każ
 
 ### Jak to sprawdzić w praktyce?
 
-bash
 
 ```bash
 # Utwórz .gitignore PRZED pierwszym commitem (albo od razu na początku projektu)
@@ -451,7 +450,6 @@ git status
 
 Jeśli **już** wcześniej dodałeś folder `venv` do repozytorium (przez pomyłkę, zanim stworzyłeś `.gitignore`), samo dodanie go do `.gitignore` **nie usunie go z historii Gita**. Musisz go najpierw ręcznie usunąć ze śledzenia:
 
-bash
 
 ```bash
 git rm -r --cached venv/
@@ -581,7 +579,6 @@ Paczki są publikowane na **PyPI** (Python Package Index) — to takie centralne
 
 Kiedy robisz:
 
-bash
 
 ```bash
 pip install requests
@@ -591,7 +588,6 @@ pip łączy się z PyPI, znajduje paczkę `requests`, pobiera ją i instaluje w 
 
 ### Podstawowe komendy pip
 
-bash
 
 ```bash
 # Instalacja paczki
