@@ -45,7 +45,7 @@
 
 ### Pylance
 
-![[Pasted image 20260717150756.png]]
+![Pasted image 20260717150756.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717150756.png)
 
 
 - high-performance language server extension;
@@ -59,7 +59,7 @@
 
 ### Jupyter
 
-![[Pasted image 20260717151203.png]]
+![Pasted image 20260717151203.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717151203.png)
 
 
 
@@ -71,7 +71,7 @@
 
 - in Settings type in: _Python Terminal Execute In File Dir_  
 
-![[Pasted image 20260717144145.png]]
+![Pasted image 20260717144145.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717144145.png)
 
 
 - VS Code will execute Python script from the file's directory instead of workspace root;
@@ -84,14 +84,14 @@
 
 ## Struktura Projektu
 
-![[Screenshot From 2026-09-02 11-50-47.png]]
+![Screenshot From 2026-09-02 11-50-47.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Screenshot%20From%202026-09-02%2011-50-47.png)
 
 
 - przykład: PythonProjects ---> python-for-ai
 - use lowercase letters with dashes (called “kebab-case”) like `python-for-ai` or `my-first-project`. This matches how projects appear on GitHub.
 
 
-![[Pasted image 20260717153005.png]]
+![Pasted image 20260717153005.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717153005.png)
 
 
 ---
@@ -109,11 +109,11 @@
 	- which files you had open;
 	- your debugging configuration.
 
-![[Pasted image 20260717154808.png]]
+![Pasted image 20260717154808.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717154808.png)
 
-![[Pasted image 20260717154850.png]]
+![Pasted image 20260717154850.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717154850.png)
 
-![[Pasted image 20260717155138.png]]
+![Pasted image 20260717155138.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717155138.png)
 
 - po ustawieniu "workspace" mogę zamknąć VS Code, następnie przejść do katalogu w którym zapisałem workspace i zrobić double-click na skrót - VS Code otworzy się samo w miejscu, w którym ostatnio pracowałem
 
