@@ -265,11 +265,11 @@ pip install -r requirements.txt
 
 - tworzę plik requirements.txt
 
-![[Pasted image 20260902141926.png]]
+![Pasted image 20260902141926.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902141926.png)
 
 - instaluję plik requirements.txt w nowym środowisku
 
-![[Pasted image 20260902142825.png]]
+![Pasted image 20260902142825.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260902142825.png)
 
 ### Pełna kolejność kroków odtwarzających środowisko projektowe
 
