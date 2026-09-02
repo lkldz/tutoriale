@@ -125,22 +125,22 @@
 
 - zwiększa czytelność struktury drzewa katalogów
 
-![[Pasted image 20260717161942.png]]
+![Pasted image 20260717161942.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717161942.png)
 
-![[Pasted image 20260717162026.png]]
+![Pasted image 20260717162026.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717162026.png)
 
 - zwiększenie do 20 pixeli:
 
-![[Pasted image 20260717162127.png]]
+![Pasted image 20260717162127.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717162127.png)
 
-![[Pasted image 20260717162158.png]]
+![Pasted image 20260717162158.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717162158.png)
 
 
 ---
 
 ## Uruchamianie kodu z terminala
 
-![[Pasted image 20260717160306.png]]
+![Pasted image 20260717160306.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Pasted%20image%2020260717160306.png)
 
 
 ---
@@ -162,7 +162,7 @@ Jeśli instalujesz pakiety globalnie (na cały system), masz problem — nie mo�
 
 - CTRL+SHIFT+P --- otwiera "command palette"
 
-![[Screenshot From 2026-09-02 12-07-25.png]]
+![Screenshot From 2026-09-02 12-07-25.png](https://github.com/lkldz/tutoriale/blob/main/kurs_pythonforai/Screeny/Screenshot%20From%202026-09-02%2011-50-47.png)
 
 ![[Pasted image 20260902120946.png]]
 
